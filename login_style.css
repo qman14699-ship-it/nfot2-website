@@ -1,0 +1,198 @@
+/* =========================
+   BASIC
+========================= */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { width: 100%; height: 100%; }
+
+body {
+    font-family: Arial, sans-serif;
+    background: #020817;
+    color: white;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* =========================
+   BACKGROUND (walang picture, live na animation)
+========================= */
+.sky {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse 60% 40% at 15% 30%, rgba(60, 110, 200, .35), transparent 70%),
+        radial-gradient(ellipse 55% 35% at 85% 55%, rgba(70, 120, 210, .30), transparent 70%),
+        radial-gradient(ellipse 70% 30% at 30% 90%, rgba(40, 80, 170, .35), transparent 70%),
+        linear-gradient(180deg, #01030d 0%, #040b26 55%, #06133a 100%);
+}
+
+#scene {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* =========================
+   LOGIN CARD
+========================= */
+.form-container {
+    position: relative;
+    z-index: 10;
+    width: 420px;
+    max-width: calc(100% - 30px);
+    padding: 40px;
+    border-radius: 20px;
+    background: rgba(13, 31, 58, .62);
+    border: 1px solid rgba(90, 160, 255, .55);
+    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
+    box-shadow:
+        0 0 30px rgba(40, 120, 255, .25),
+        inset 0 0 30px rgba(70, 140, 255, .08);
+}
+
+h2 {
+    text-align: center;
+    font-size: 40px;
+    margin-bottom: 30px;
+    text-shadow: 0 0 10px white, 0 0 25px #4285ff;
+}
+
+/* =========================
+   FLOATING LABEL INPUT
+========================= */
+.floating-input {
+    position: relative;
+    width: 100%;
+    height: 52px;
+    margin-bottom: 22px;
+}
+
+.floating-input input {
+    width: 100%;
+    height: 100%;
+    padding: 0 16px;
+    border-radius: 30px;
+    border: 1px solid rgba(90, 150, 255, .5);
+    outline: none;
+    background: rgba(5, 20, 45, .55);
+    color: white;
+    font-size: 15px;
+    transition: .3s;
+}
+
+.floating-input input::placeholder { color: transparent; }
+
+.floating-input label {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0 5px;
+    color: #9db8df;
+    font-size: 15px;
+    pointer-events: none;
+    transition: .25s ease;
+}
+
+.floating-input input:focus {
+    border-color: #5da0ff;
+    box-shadow: 0 0 15px rgba(70, 140, 255, .5);
+}
+
+.floating-input input:focus + label,
+.floating-input input:not(:placeholder-shown) + label {
+    top: 0;
+    font-size: 12px;
+    color: #65b5ff;
+    background: #0d1f3a;
+    text-shadow: 0 0 8px rgba(80, 160, 255, .8);
+}
+
+/* =========================
+   SHOW PASSWORD
+========================= */
+.show-password {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 5px 0 20px;
+}
+.show-password input {
+    width: 16px;
+    height: 16px;
+    accent-color: #4d8dff;
+}
+.show-password label {
+    color: #c9ddff;
+    font-size: 14px;
+}
+
+/* =========================
+   BUTTON
+========================= */
+button {
+    width: 100%;
+    height: 52px;
+    border: none;
+    border-radius: 30px;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    background: linear-gradient(90deg, #63b5ff, #4f72ff, #7555ff);
+    box-shadow: 0 0 20px rgba(70, 120, 255, .4);
+    transition: .3s;
+}
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(70, 130, 255, .7);
+}
+
+/* =========================
+   TEXT / MESSAGES
+========================= */
+#toggleText {
+    text-align: center;
+    color: #b9cceb;
+    margin-top: 22px;
+    font-size: 14px;
+}
+#toggleText a { color: #5fa5ff; font-weight: bold; text-decoration: none; }
+#toggleText a:hover { color: white; }
+
+#errorMessage {
+    text-align: center;
+    color: #ff6688;
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+#passwordMatchMessage {
+    font-size: 13px;
+    margin: -10px 0 15px 8px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+@media (max-width: 600px) {
+    .form-container { width: calc(100% - 28px); padding: 28px 22px; border-radius: 18px; }
+    h2 { font-size: 32px; margin-bottom: 25px; }
+    .shooting-star::before { width: 70px; }
+}
+@media (max-width: 380px) {
+    .form-container { padding: 24px 18px; }
+    h2 { font-size: 29px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #scene { display: none; }
+}

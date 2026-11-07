@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goals - Kevin Bandong</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="site.css?v=5">
+    <link rel="stylesheet" href="nav.css?v=11">
+    <script src="nav.js?v=15" defer></script>
+
+    <style>
+        /* only the tapped card grows, its neighbour stays the same size */
+        .goal-grid { align-items: start; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+        .acc { padding: 0; }
+        .acc-head {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 16px 14px;
+            border: 0;
+            background: none;
+            color: inherit;
+            font: inherit;
+            text-align: left;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .acc-head:focus-visible { outline: 2px solid var(--c); outline-offset: -3px; border-radius: 14px; }
+
+        .acc-head .t {
+            display: block;
+            margin-top: 12px;
+            color: var(--c);
+            font-weight: 700;
+            font-size: .98rem;
+            line-height: 1.3;
+        }
+        @media (max-width: 560px) { .acc-head .t { min-height: 2.6em; } }   /* every closed card has the same height */
+        .acc.open { box-shadow: 0 0 0 1px var(--c), 0 18px 40px -22px var(--c); }
+        .panel {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height .35s ease, opacity .3s ease;
+        }
+        .acc.open .panel { opacity: 1; }
+        .panel ul { margin: 0; padding: 0 14px 16px 30px; font-size: .84rem; color: #CBD5E1; }
+        .panel li { margin: 5px 0; }
+        .panel li::marker { color: var(--c); }
+
+        .tap-hint { margin: -8px 0 4px; color: #64748B; font-size: .74rem; letter-spacing: .06em; }
+
+        /* ---------- journey timeline ---------- */
+        .tl-eyebrow { margin-top: 38px; }
+        h2.tl-title {
+            margin: 6px 0 4px;
+            color: #F8FAFC;
+            font: 700 clamp(1.5rem, 5vw, 2rem)/1.2 'Playfair Display', serif;
+        }
+        .timeline { position: relative; max-width: 700px; margin: 22px 0 0; }
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 13px;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            border-radius: 2px;
+            background: linear-gradient(180deg, #94A3B8 0%, var(--accent) 45%, #A78BFA 100%);
+            opacity: .55;
+        }
+        .tl-item { --c: var(--accent); position: relative; padding: 0 0 22px 46px; }
+        .tl-item:last-child { padding-bottom: 0; }
+        .tl-dot {
+            position: absolute;
+            left: 4px;
+            top: 6px;
+            width: 20px;
+            height: 20px;
+            box-sizing: border-box;
+            border-radius: 50%;
+            background: #0B1220;
+            border: 3px solid var(--c);
+        }
+        .tl-item.now .tl-dot { background: var(--c); animation: tlPulse 2s ease-out infinite; }
+        @keyframes tlPulse { 0% { box-shadow: 0 0 0 0 rgba(249, 115, 22, .55); } 100% { box-shadow: 0 0 0 14px rgba(249, 115, 22, 0); } }
+
+        .tl-card {
+            padding: 14px 16px;
+            border: 1px solid rgba(148, 163, 184, .16);
+            border-left: 3px solid var(--c);
+            border-radius: 14px;
+            background: rgba(30, 41, 59, .72);
+            -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px);
+            box-shadow: 0 14px 30px -18px rgba(0, 0, 0, .8);
+        }
+        .tl-tag { display: block; color: var(--c); font: 600 .64rem 'Montserrat', system-ui, sans-serif; letter-spacing: .18em; text-transform: uppercase; }
+        .tl-h { margin: 4px 0 6px; color: #fff; font: 700 1rem/1.3 'Montserrat', system-ui, sans-serif; }
+        .tl-p { margin: 0; color: #CBD5E1; font-size: .86rem; line-height: 1.65; }
+    </style>
+</head>
+<body class="dark">
+
+<section class="page">
+    <div class="wrap">
+        <p class="eyebrow-l">My Goals</p>
+        <h1 class="title">My Goals as a Student</h1>
+        <p class="lead">Small steps. Big dreams.</p>
+        <p class="tap-hint">Tap a card to see more.</p>
+
+        <div class="grid goal-grid">
+
+            <div class="card top acc" style="--c:#F97316">
+                <button type="button" class="acc-head" aria-expanded="false">
+                    <svg class="ic" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                    <span class="t">Short-Term Goals</span>
+                </button>
+                <div class="panel">
+                    <ul>
+                        <li>Improve my coding skills</li>
+                        <li>Maintain good grades</li>
+                        <li>Build my personal website</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card top acc" style="--c:#38BDF8">
+                <button type="button" class="acc-head" aria-expanded="false">
+                    <svg class="ic" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    <span class="t">Long-Term Goals</span>
+                </button>
+                <div class="panel">
+                    <ul>
+                        <li>Become a professional developer</li>
+                        <li>Build meaningful projects</li>
+                        <li>Achieve financial freedom</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card top acc" style="--c:#A78BFA">
+                <button type="button" class="acc-head" aria-expanded="false">
+                    <svg class="ic" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <span class="t">Personal Development</span>
+                </button>
+                <div class="panel">
+                    <ul>
+                        <li>Be more confident</li>
+                        <li>Improve communication</li>
+                        <li>Build healthy habits</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card top acc" style="--c:#94A3B8">
+                <button type="button" class="acc-head" aria-expanded="false">
+                    <svg class="ic" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                    <span class="t">Career Goals</span>
+                </button>
+                <div class="panel">
+                    <ul>
+                        <li>Get a job in the IT industry</li>
+                        <li>Gain real-world experience</li>
+                        <li>Make an impact</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <p class="eyebrow-l tl-eyebrow">The Path</p>
+        <h2 class="tl-title">My Journey</h2>
+        <p class="lead">From where I started to where I want to be.</p>
+        <div class="timeline" id="timeline"></div>
+
+        <p class="quote">&ldquo;Discipline today,<br>freedom tomorrow.&rdquo;</p>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2026 Kevin Bandong. All rights reserved. &nbsp;<span class="tag">Better Code &middot; Brighter Future</span></p>
+</footer>
+
+<script>
+/* tap a card -> it extends downward and shows its text; tap again to close */
+(function () {
+    var cards = document.querySelectorAll('.acc');
+
+    cards.forEach(function (card) {
+        var head = card.querySelector('.acc-head');
+        var panel = card.querySelector('.panel');
+
+        head.addEventListener('click', function () {
+            var open = !card.classList.contains('open');
+            card.classList.toggle('open', open);
+            head.setAttribute('aria-expanded', open ? 'true' : 'false');
+            panel.style.maxHeight = open ? panel.scrollHeight + 'px' : '0';
+        });
+    });
+
+    /* keep the opened cards the right height if the screen size changes */
+    window.addEventListener('resize', function () {
+        cards.forEach(function (card) {
+            if (card.classList.contains('open')) {
+                var p = card.querySelector('.panel');
+                p.style.maxHeight = p.scrollHeight + 'px';
+            }
+        });
+    });
+})();
+</script>
+
+<script>
+/* My journey - edit the texts here. "now: true" gets the glowing dot. */
+const JOURNEY = [
+    { tag: 'Where I started', title: 'Information Systems student',
+      text: 'I began my Information Systems studies in Tibiao, Antique, curious about how technology really works.', color: '#94A3B8' },
+
+    { tag: 'What I learned', title: 'The basics of building',
+      text: 'I learned HTML, CSS and JavaScript, plus Python and databases, and started making my own pages.', color: '#38BDF8' },
+
+    { tag: 'Right now', title: 'Building my personal website',
+      text: 'Turning what I learn into real projects. This portfolio is my first big one, and I keep improving it.', color: '#F97316', now: true },
+
+    { tag: 'Next', title: 'Short-term goals',
+      text: 'Improve my coding skills, keep my grades up, and keep polishing my website.', color: '#A78BFA' },
+
+    { tag: 'Later', title: 'Long-term goals',
+      text: 'Become a professional developer and build projects that mean something.', color: '#38BDF8' },
+
+    { tag: 'The dream', title: 'Freedom and impact',
+      text: 'Get a job in the IT industry, gain real-world experience, achieve financial freedom, and make an impact.', color: '#F97316' }
+];
+
+(function () {
+    var box = document.getElementById('timeline');
+    JOURNEY.forEach(function (j) {
+        var item = document.createElement('div');
+        item.className = 'tl-item' + (j.now ? ' now' : '');
+        item.style.setProperty('--c', j.color || '#F97316');
+        item.innerHTML =
+            '<span class="tl-dot"></span>' +
+            '<div class="tl-card"><span class="tl-tag"></span><h3 class="tl-h"></h3><p class="tl-p"></p></div>';
+        item.querySelector('.tl-tag').textContent = j.tag;
+        item.querySelector('.tl-h').textContent = j.title;
+        item.querySelector('.tl-p').textContent = j.text;
+        box.appendChild(item);
+    });
+})();
+</script>
+
+</body>
+</html>

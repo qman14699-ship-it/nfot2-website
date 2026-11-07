@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fun Facts - Kevin Bandong</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="site.css?v=5">
+    <link rel="stylesheet" href="nav.css?v=11">
+    <script src="nav.js?v=15" defer></script>
+
+    <style>
+        .facts {
+            list-style: none;
+            margin: 18px 0 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        @media (min-width: 760px) { .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+        .fact {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 14px 16px;
+            background: rgba(30, 41, 59, .72);
+            border: 1px solid rgba(148, 163, 184, .16);
+            border-left: 3px solid var(--accent);
+            border-radius: 14px;
+            -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px);
+            box-shadow: 0 14px 30px -18px rgba(0, 0, 0, .7);
+            transition: transform .25s ease, border-color .25s ease;
+        }
+        .fact:hover { transform: translateX(3px); border-color: var(--accent); }
+
+        .fact .num {
+            flex: 0 0 auto;
+            min-width: 1.6em;
+            color: var(--accent);
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.05rem;
+            line-height: 1.5;
+        }
+        .fact .txt {
+            color: #E2E8F0;
+            font-size: .92rem;
+            line-height: 1.55;
+        }
+    </style>
+</head>
+<body class="dark">
+
+<section class="page">
+    <div class="wrap">
+        <p class="eyebrow-l">Fun Facts</p>
+        <h1 class="title">Fun Facts About Me</h1>
+        <p class="lead">Little things that make me, me.</p>
+
+        <!-- add or edit a fact: copy one <li> line below -->
+        <ul class="facts">
+            <li class="fact"><span class="num">01</span><span class="txt">I love chocolate because I thought it would make me smarter.</span></li>
+            <li class="fact"><span class="num">02</span><span class="txt">I'm judgemental I sometimes.</span></li>
+            <li class="fact"><span class="num">03</span><span class="txt">Tanga sa pag ibig</span></li>
+            <li class="fact"><span class="num">04</span><span class="txt">Professional overthinker</span></li>
+            <li class="fact"><span class="num">05</span><span class="txt">Mabilis ma-fall, Mabagal mag move on</span></li>
+            <li class="fact"><span class="num">06</span><span class="txt">Has sense of humor or kamanyakan lang.</span></li>
+            <li class="fact"><span class="num">07</span><span class="txt">I'm very sensitive</span></li>
+            <li class="fact"><span class="num">08</span><span class="txt">Music is my best therapy</span></li>
+            <li class="fact"><span class="num">09</span><span class="txt">I act like I don't care, but deep down, I care too much.</span></li>
+            <li class="fact"><span class="num">10</span><span class="txt">Smart Minsan, TNT lagi</span></li>
+            <li class="fact"><span class="num">11</span><span class="txt">A supportive Friend</span></li>
+            <li class="fact"><span class="num">12</span><span class="txt">Humble and kupal na person</span></li>
+            <li class="fact"><span class="num">13</span><span class="txt">Spelling and grammar is my worst nemesis</span></li>
+            <li class="fact"><span class="num">14</span><span class="txt">Naka serious mode lagi Mukha ko, Alangan naman ngitian kita edi ma inlove ka.</span></li>
+            <li class="fact"><span class="num">15</span><span class="txt">I'm quiet at first, but once I'm comfortable, I never stop talking.</span></li>
+            <li class="fact"><span class="num">16</span><span class="txt">I love block color because it's looking cool</span></li>
+            <li class="fact"><span class="num">17</span><span class="txt">Professional ghoster</span></li>
+            <li class="fact"><span class="num">18</span><span class="txt">Shempre Pogi na gwapo pa AHHAHAHAH</span></li>
+            <li class="fact"><span class="num">19</span><span class="txt">Seloso nahh dapat cool lang, coolang sa karapatan</span></li>
+            <li class="fact"><span class="num">20</span><span class="txt">Mahilig sa pareto, pero sakin</span></li>
+            <li class="fact"><span class="num">21</span><span class="txt">Also I love workouts to burn memories</span></li>
+        </ul>
+
+        <p class="quote">Good things take time.</p>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2026 Kevin Bandong. All rights reserved. &nbsp;<span class="tag">Better Code &middot; Brighter Future</span></p>
+</footer>
+
+</body>
+</html>

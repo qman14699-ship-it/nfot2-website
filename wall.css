@@ -1,0 +1,68 @@
+/* Photo wall: rows of portrait cards that slide sideways (row 1 left, row 2 right, ...).
+   No outer box, the cards sit directly on the page. */
+
+#gallery .wall {
+    --ch: clamp(180px, 34vw, 270px);      /* card height */
+    width: 100%;
+    margin: clamp(14px, 3vh, 28px) 0 0;
+    overflow: hidden;
+    background: none;
+}
+
+#gallery .wall-stage {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+#gallery .wall-row {
+    overflow: hidden;
+    padding: 8px 0;               /* room so a hovered card doesn't get clipped */
+}
+
+#gallery .wall-track {
+    display: flex;
+    width: max-content;
+    animation: wallLeft var(--dur, 60s) linear infinite;
+    will-change: transform;
+}
+#gallery .wall-track.right { animation-name: wallRight; }
+
+@keyframes wallLeft  { from { transform: translateX(0); }    to { transform: translateX(-50%); } }
+@keyframes wallRight { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+
+#gallery .wall-card {
+    flex: 0 0 auto;
+    height: var(--ch);
+    aspect-ratio: 3 / 4;
+    margin: 0 12px 0 0;
+    padding: 0;
+    border: 0;
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+    background: #1A2233;
+    box-shadow: 0 14px 28px -14px rgba(27, 34, 51, .65), 0 2px 8px rgba(27, 34, 51, .12);
+    transition: transform .3s ease, filter .3s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+#gallery .wall-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+    -webkit-user-drag: none;
+}
+#gallery .wall-card:hover { transform: scale(1.04); filter: brightness(1.06); }
+#gallery .wall-card:focus-visible { outline: 2px solid #4A6E96; outline-offset: 2px; }
+
+/* pause while the pop-up is open, or while hovering with a mouse */
+body.lb-open #gallery .wall-track { animation-play-state: paused; }
+@media (hover: hover) {
+    #gallery .wall:hover .wall-track { animation-play-state: paused; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #gallery .wall-track { animation: none; }
+}

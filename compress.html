@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Compressor</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 20px 16px 60px; background: #0B1220; color: #CBD5E1; font: 15px/1.6 system-ui, sans-serif; }
+        .box { max-width: 640px; margin: 0 auto; }
+        h1 { margin: 0 0 6px; color: #fff; font-size: 1.4rem; }
+        .note { margin: 0 0 18px; color: #94A3B8; font-size: .88rem; }
+        .panel { padding: 16px; border: 1px solid rgba(148, 163, 184, .2); border-radius: 14px; background: #121A2B; }
+        label { display: block; margin: 12px 0 6px; color: #F1F5F9; font-weight: 600; font-size: .85rem; }
+        select, input[type=file] { width: 100%; padding: 10px; border: 1px solid rgba(148, 163, 184, .3); border-radius: 10px; background: #0F172A; color: #F1F5F9; font: inherit; }
+        input[type=range] { width: 100%; }
+        .row { display: flex; gap: 10px; }
+        .row > div { flex: 1; }
+        button {
+            width: 100%; margin-top: 16px; padding: 13px; border: 0; border-radius: 10px;
+            background: #F97316; color: #fff; font: 700 .95rem system-ui, sans-serif; cursor: pointer;
+        }
+        button.alt { background: transparent; border: 1px solid rgba(148, 163, 184, .4); color: #F1F5F9; }
+        button:disabled { opacity: .5; }
+
+        .item { display: flex; align-items: center; gap: 12px; margin-top: 12px; padding: 10px; border: 1px solid rgba(148, 163, 184, .18); border-radius: 12px; background: #121A2B; }
+        .item img { width: 56px; height: 56px; object-fit: cover; border-radius: 8px; flex: 0 0 auto; background: #1E293B; }
+        .item .t { min-width: 0; flex: 1; }
+        .item .n { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #fff; font-weight: 600; font-size: .88rem; }
+        .item .s { color: #94A3B8; font-size: .8rem; }
+        .item .s b { color: #34D399; }
+        .item a { flex: 0 0 auto; padding: 8px 12px; border-radius: 8px; background: rgba(249, 115, 22, .15); color: #FDBA74; text-decoration: none; font-weight: 600; font-size: .8rem; }
+        .total { margin-top: 14px; color: #F1F5F9; font-weight: 600; }
+    </style>
+</head>
+<body>
+<div class="box">
+    <h1>Image Compressor</h1>
+    <p class="note">
+        Pumili ng mga larawan, i-compress, tapos i-download. Nasa phone mo lang ang lahat, walang na-a-upload.
+        Pagkatapos, ilagay ang mga bagong file sa folder na <b>Images/</b> at palitan ang luma na may parehong pangalan.
+    </p>
+
+    <div class="panel">
+        <label for="files">Larawan (pwede marami)</label>
+        <input type="file" id="files" accept="image/*" multiple>
+
+        <div class="row">
+            <div>
+                <label for="maxw">Pinakamalaking lapad</label>
+                <select id="maxw">
+                    <option value="1200">1200 px (maliit)</option>
+                    <option value="1600" selected>1600 px (inirerekomenda)</option>
+                    <option value="2000">2000 px (malaki)</option>
+                </select>
+            </div>
+            <div>
+                <label for="fmt">Format</label>
+                <select id="fmt">
+                    <option value="keep" selected>Panatilihin (jpg = jpg, png = png)</option>
+                    <option value="jpg">Gawing JPG (mas maliit)</option>
+                </select>
+            </div>
+        </div>
+
+        <label for="q">Quality: <span id="qv">80</span>%</label>
+        <input type="range" id="q" min="50" max="95" value="80">
+
+        <button id="go">Compress</button>
+    </div>
+
+    <div id="out"></div>
+    <p class="total" id="total"></p>
+    <button class="alt" id="all" style="display:none">Download lahat</button>
+    <p class="note" id="hint" style="display:none; margin-top:14px">
+        Tip: kung ginawa mong JPG ang isang PNG (halimbawa <b>7k.png</b>), magiging <b>7k.jpg</b> ito. Palitan ang pangalan sa listahan ng gallery mo.
+    </p>
+</div>
+
+<script>
+(function () {
+    var files = document.getElementById('files');
+    var qEl = document.getElementById('q');
+    var out = document.getElementById('out');
+    var total = document.getElementById('total');
+    var allBtn = document.getElementById('all');
+    var results = [];
+
+    qEl.addEventListener('input', function () { document.getElementById('qv').textContent = qEl.value; });
+
+    function kb(n) { return n > 1048576 ? (n / 1048576).toFixed(2) + ' MB' : Math.round(n / 1024) + ' KB'; }
+
+    function load(file) {
+        return new Promise(function (res, rej) {
+            var url = URL.createObjectURL(file);
+            var img = new Image();
+            img.onload = function () { res({ img: img, url: url }); };
+            img.onerror = function () { rej(new Error('cannot read ' + file.name)); };
+            img.src = url;
+        });
+    }
+
+    function compress(file, maxW, fmt, quality) {
+        return load(file).then(function (o) {
+            var w = o.img.naturalWidth, h = o.img.naturalHeight;
+            var k = Math.min(1, maxW / Math.max(w, h));
+            var cw = Math.round(w * k), ch = Math.round(h * k);
+
+            var c = document.createElement('canvas');
+            c.width = cw; c.height = ch;
+            var ctx = c.getContext('2d');
+
+            var isPng = /png$/i.test(file.type);
+            var asJpg = fmt === 'jpg' || !isPng;
+            if (asJpg) { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, cw, ch); }   /* no black background for transparent PNGs */
+            ctx.drawImage(o.img, 0, 0, cw, ch);
+            URL.revokeObjectURL(o.url);
+
+            return new Promise(function (res) {
+                c.toBlob(function (blob) {
+                    var base = file.name.replace(/\.[^.]+$/, '');
+                    var name = base + (asJpg ? '.jpg' : '.png');
+                    /* never return a bigger file than the original */
+                    if (blob && blob.size >= file.size && name.toLowerCase() === file.name.toLowerCase()) { blob = file; }
+                    res({ name: name, blob: blob, before: file.size });
+                }, asJpg ? 'image/jpeg' : 'image/png', quality);
+            });
+        });
+    }
+
+    document.getElementById('go').addEventListener('click', function () {
+        var list = Array.prototype.slice.call(files.files);
+        if (!list.length) { alert('Pumili muna ng larawan.'); return; }
+
+        var btn = this;
+        btn.disabled = true;
+        btn.textContent = 'Nagko-compress...';
+        out.innerHTML = '';
+        results = [];
+        total.textContent = '';
+
+        var maxW = +document.getElementById('maxw').value;
+        var fmt = document.getElementById('fmt').value;
+        var quality = qEl.value / 100;
+
+        var chain = Promise.resolve();
+        list.forEach(function (f) {
+            chain = chain.then(function () {
+                return compress(f, maxW, fmt, quality).then(function (r) {
+                    results.push(r);
+                    var url = URL.createObjectURL(r.blob);
+                    r.url = url;
+
+                    var d = document.createElement('div');
+                    d.className = 'item';
+                    var saved = Math.max(0, Math.round((1 - r.blob.size / r.before) * 100));
+                    d.innerHTML = '<img alt=""><div class="t"><div class="n"></div><div class="s"></div></div><a>Download</a>';
+                    d.querySelector('img').src = url;
+                    d.querySelector('.n').textContent = r.name;
+                    d.querySelector('.s').innerHTML = kb(r.before) + ' &rarr; <b>' + kb(r.blob.size) + '</b> (-' + saved + '%)';
+                    var a = d.querySelector('a');
+                    a.href = url;
+                    a.download = r.name;
+                    out.appendChild(d);
+                }).catch(function () {
+                    var d = document.createElement('div');
+                    d.className = 'item';
+                    d.textContent = 'Hindi mabasa: ' + f.name;
+                    out.appendChild(d);
+                });
+            });
+        });
+
+        chain.then(function () {
+            var before = results.reduce(function (s, r) { return s + r.before; }, 0);
+            var after = results.reduce(function (s, r) { return s + r.blob.size; }, 0);
+            if (results.length) {
+                total.textContent = 'Kabuuan: ' + kb(before) + ' \u2192 ' + kb(after) + ' (natipid mo ang ' + kb(Math.max(0, before - after)) + ')';
+                allBtn.style.display = 'block';
+                document.getElementById('hint').style.display = 'block';
+            }
+            btn.disabled = false;
+            btn.textContent = 'Compress';
+        });
+    });
+
+    allBtn.addEventListener('click', function () {
+        results.forEach(function (r, i) {
+            setTimeout(function () {
+                var a = document.createElement('a');
+                a.href = r.url;
+                a.download = r.name;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+            }, i * 450);
+        });
+    });
+})();
+</script>
+</body>
+</html>

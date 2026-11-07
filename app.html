@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kevin Bandong</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="site.css?v=5">
+    <link rel="stylesheet" href="home.css?v=1">
+
+    <style>
+        html, body { margin: 0; height: 100%; overflow: hidden; background: #0B1220; }
+
+        /* every page of the website is shown here */
+        #view {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            background: #0B1220;
+        }
+    </style>
+</head>
+<body>
+
+<!-- The pages of the website open inside this frame.
+     This outer page never reloads, so the music keeps playing on every page. -->
+<iframe id="view" title="Kevin Bandong"></iframe>
+
+<!-- MUSIC PLAYER (lives here, not inside the pages) -->
+<div class="mp" id="mp" role="dialog" aria-modal="true" aria-label="Music player">
+    <div class="mp-bg" id="mpBgA"></div>
+    <div class="mp-bg" id="mpBgB"></div>
+
+    <button type="button" class="mp-close" id="mpClose" aria-label="Close">&times;</button>
+
+    <div class="mp-inner">
+        <div class="mp-stage" id="mpStage"></div>
+
+        <p class="mp-title" id="mpTitle"></p>
+        <p class="mp-artist" id="mpArtist"></p>
+        <p class="mp-note" id="mpNote"></p>
+
+        <div class="mp-bar"><input type="range" id="mpSeek" min="0" max="100" value="0" step="0.1" aria-label="Seek"></div>
+
+        <div class="mp-ctrl">
+            <button type="button" id="mpPrev" aria-label="Previous">
+                <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"/><rect x="5" y="4" width="2.5" height="16"/></svg>
+            </button>
+            <button type="button" class="play" id="mpPlay" aria-label="Play / pause">
+                <svg id="mpPlayIcon" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+            </button>
+            <button type="button" id="mpNext" aria-label="Next">
+                <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"/><rect x="16.5" y="4" width="2.5" height="16"/></svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+/* which page to show first:  app.html#skills.html  opens Skills, no hash opens Home */
+(function () {
+    var f = document.getElementById('view');
+    var h = (location.hash || '').replace('#', '');
+    f.src = /^[\w-]+\.html$/i.test(h) ? h : 'index.html';
+
+    /* keep the browser tab title and address in step with the page that is showing */
+    f.addEventListener('load', function () {
+        try {
+            var d = f.contentDocument;
+            if (d && d.title) document.title = d.title;
+            var p = f.contentWindow.location.pathname.split('/').pop() || 'index.html';
+            history.replaceState(null, '', location.pathname + '#' + p);
+        } catch (e) {}
+        /* tell the page what is playing right now (Home needs it for the Now Playing card) */
+        if (window.getMusicState) {
+            var s = window.getMusicState();
+            try { f.contentWindow.dispatchEvent(new f.contentWindow.CustomEvent('music-state', { detail: s })); } catch (e) {}
+        }
+    });
+})();
+</script>
+
+<script src="music-data.js?v=2"></script>
+<script src="music.js?v=3"></script>
+
+</body>
+</html>

@@ -1,0 +1,1681 @@
+body {
+ font-family: Trebuchet MS, sans-serif;
+ margin: 0;
+ padding: 0;
+ background-color: #f0f8ff;
+}
+header {
+ background-color: #282c34;
+ color: white;
+ padding: 10px;
+ text-align: center;
+ position: fixed; /* Changed to fixed */
+ top: 0;
+ left: 0; /* Ensure it stretches across */
+ width: 100%; /* Ensure it stretches across */
+ z-index: 999;
+ font-family: Trebuchet MS, sans-serif;
+}
+nav {
+ position: fixed; /* Changed to fixed */
+ top: 100px; /* Position below the header */
+ left: 0;
+ width: 100%;
+ z-index: 999;
+}
+nav ul {
+ list-style-type: none;
+ padding: 0;
+ margin: 0;
+ display: flex;
+ justify-content: center;
+ background-color: #ff6600;
+}
+nav ul li {
+ margin: 0 15px;
+}
+nav ul li a {
+ text-decoration: none;
+ color: rgb(0, 0, 0);
+ font-weight: bold;
+ padding: 15px;
+ display: block;
+ font-size: 20px;
+}
+nav ul li a:hover {
+ background-color: #ffffff;
+ font-size: 20px;
+ color: #ff6600;
+}
+/* Dropdown Styles */
+.dropdown-content {
+ display: none;
+ position: absolute;
+ background-color: #ffffff;
+ box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+ min-width: 160px;
+ z-index: 1;
+}
+.dropdown:hover .dropdown-content { 
+ display: block;
+}
+.dropdown-content a {
+ color: black;
+ padding: 12px 16px;
+ text-decoration: none;
+ display: block;
+}
+/* Keep the ABOUT link active while hovering on the dropdown */
+.dropdown:hover .dropbtn {
+ background-color: #ffffff; /* Highlight color when hovered */
+ color: #ff6600; /* Optional: change text color when dropdown is open */
+}
+#drop {
+ padding: 20px 10px 15px 5px; /* Top, Right, Bottom, Left */
+}
+#drop h2 {
+ text-align: center;
+ margin-bottom: 20px;
+ margin-top: 0;
+ font-size: 50px;
+ background: #ff6600;
+ -webkit-background-clip: text;
+ -webkit-text-fill-color: transparent;
+}
+#drop p {
+ text-align: center;
+}
+section {
+ padding: 50px;
+ margin: 100px 100px; /* Add top margin to prevent content being hidden behind the fixed 
+header and nav */
+ background-color: white;
+ border-radius: 8px;
+ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+ margin-bottom: 15px;
+ margin-top: 38.5px;
+ 
+}
+.section2 {
+ padding: 50px;
+ background-color: white;
+ border-radius: 8px;
+ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+ margin-bottom: 15px;
+ margin-top: 100px;
+ 
+}
+/* See More Button */
+.see-more-container {
+ text-align: center; /* Center the button */
+ margin-top: 20px; /* Add some space above */
+}
+.see-more-button {
+ display: inline-block;
+ padding: 10px 20px;
+ background-color: #ff6600; /* Blue background */
+ color: white; /* White text */
+ text-decoration: none; /* Remove underline */
+ border-radius: 20px; /* Rounded corners */
+ font-size: 1.2em; /* Font size */
+ transition: background-color 0.3s ease; /* Transition effect */
+} 
+.see-more-button:hover {
+ background-color: #e65c00; /* Darker blue on hover */
+}
+.footer-divider {
+ height: 5px; /* Height of the orange line */
+ background-color: #ff6600; /* Orange color */
+ width: 100%; /* Full width */
+ margin: 0;
+ 
+}
+footer {
+ background-color: #282c34;
+ color: white;
+ text-align: center;
+ padding: 10px;
+ position: relative;
+ bottom: 0;
+ width: 98.7%;
+}
+.slider {
+ width: 100%;
+ position: relative; /* Position relative for absolute positioning of text overlay */
+ overflow: hidden; /* Hide overflow to keep the slides inside the slider */
+ border-radius: 0; /* Rounded corners */
+}
+.slides {
+ display: flex; /* Arrange slides in a row */
+ transition: transform 0.5s ease; /* Smooth transition for sliding */
+}
+.slide {
+ position: relative; /* Position relative for absolute positioning of text overlay */
+ min-width: 100%; /* Each slide takes full width of the slider */
+}
+.slides img {
+ width: 100%; /* Make images full width */
+ border-radius: 0; /* Rounded corners */
+ height: 600px;
+}
+/* Text overlay styling */
+.text-overlay {
+ position: absolute; /* Ensure it's positioned relative to the .slide container */
+ top: 50%; /* Position it halfway down the slide */
+ left: 50%; /* Position it halfway across the slide */
+ transform: translate(-50%, -50%); /* Shift it by 50% of its own height and width to truly 
+center it */
+ color: white; /* Text color */
+ font-size: 32px; /* Font size */
+ background: #ff6600;
+ -webkit-background-clip: text;
+ -webkit-text-fill-color: transparent;
+ padding: 50px; /* Padding around the text */
+ border-radius: 5px; /* Optional: Rounded corners */
+ text-align: center; /* Center the text within the box */
+}
+#contact {
+ display: flex;
+ justify-content: space-between;
+ margin: 38px auto; 
+ padding: 50px;
+ background-color: #f9f9f9;
+ border-radius: 8px;
+ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+ width: 50%;
+ max-width: 1200px;
+} 
+.contact-content {
+ display: flex;
+ justify-content: space-between;
+ width: 100%;
+}
+.contact-form {
+ width: 48%; /* Set width to 48% to create space for the details container */
+ display: flex;
+ flex-direction: column;
+}
+.contact-form label {
+ font-weight: bold;
+ margin-bottom: 5px;
+ font-size: 20px;
+ font-family: 'Trebuchet MS', sans-serif;
+}
+.contact-form input, .contact-form textarea {
+ margin-bottom: 10px;
+ padding: 12px;
+ border-radius: 20px;
+ border: 1px solid #282c34;
+ width: 100%; /* Ensure inputs take full width */
+ box-sizing: border-box;
+}
+.contact-form button {
+ background-color: #ff6600;
+ color: white;
+ padding: 12px;
+ border: none;
+ border-radius: 20px;
+ cursor: pointer;
+ width: 100%; /* Make the button stretch across the form */
+ box-sizing: border-box;
+ font-family: 'Trebuchet MS', sans-serif;
+ font-size: 15px;
+ margin-top: 5px;
+}
+.contact-form button:hover {
+ background-color: #e65c00;
+}
+#contact h2 {
+ text-align: center;
+ margin-bottom: 20px;
+ margin-top: 0;
+ font-size: 35px;
+ background: #ff6600;
+ -webkit-background-clip: text;
+ -webkit-text-fill-color: transparent;
+}
+/* Contact Details Styling */
+.contact-details {
+ width: 40%; /* Set width to 48% for the details container */
+ padding: 20px;
+ background-color: #282c34;
+ border-radius: 8px;
+ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+ color: #ffffff;
+ font-size: 20px;
+}
+.contact-details h3 {
+ font-size: 35px;
+ margin-top: 0%;
+}
+/* In style.css */
+.contact-background {
+ font-family: Trebuchet MS, sans-serif;
+ margin: 0; 
+ padding: 0;
+ background: linear-gradient(270deg, #ff6600, #ffcc00, #00ccff); /* Three-color gradient */
+ background-size: 600% 600%; /* Adjusted size for better visibility */
+ animation: gradientAnimation 15s ease infinite; /* Animation effect */
+}
+/* Gradient animation */
+@keyframes gradientAnimation {
+ 0% { background-position: 0% 50%; }
+ 50% { background-position: 100% 50%; }
+ 100% { background-position: 0% 50%; }
+}
+.error {
+ font-family: Arial, sans-serif;
+ color: #ff6600;
+ font-size: 14px;
+ font-weight: normal;
+ display: block; /* Ensure the error message is displayed on a new line */
+ margin-top: ; /* Add some space between the input and the error */
+}
+#gallery h2 {
+ text-align: center;
+ margin-bottom: 20px;
+ margin-top: 0;
+ font-size: 50px;
+ background: #ff6600;
+ -webkit-background-clip: text;
+ -webkit-text-fill-color: transparent;
+}
+.gallery {
+ display: flex;
+ flex-wrap: wrap; /* Allows images to wrap to the next line if they don’t fit */
+ justify-content: center; /* Centers the images */
+ gap: 20px; /* Adds spacing between images */
+ padding: 15px; /* Adds padding around the gallery */
+}
+.gallery-item {
+ text-align: center;
+ width: 350px;
+}
+/* Styling for the gallery thumbnails */
+.gallery img {
+ width: 100%;
+ height: 200px;
+ margin: 10px;
+ border-radius: 5px;
+ cursor: pointer; /* Adds a pointer to indicate clickability */
+ transition: transform 0.3s ease;
+}
+.gallery img:hover {
+ transform: scale(1.05);
+}
+.image-description {
+ font-size: 16px;
+ color: #333;
+ margin-top: 8px;
+}
+.lightbox {
+ display: none; /* Hidden by default */
+ position: fixed; /* Stays in place */
+ z-index: 1001; /* Sits on top of everything else */
+ left: 0;
+ top: 0;
+ width: 100%;
+ height: 100%;
+ background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent black background */
+}
+.lightbox-content {
+ display: block;
+ margin: auto; 
+ max-width: 80%; /* Resizes the image to fit within the screen */
+ max-height: 80%;
+ border-radius: 8px;
+ margin-top: 5%; /* Vertically centers the image */
+ z-index: 1002; /* Ensure image has a higher z-index than the background */
+ 
+}
+.close {
+ position: absolute;
+ top: 20px;
+ right: 30px;
+ color: white;
+ font-size: 40px;
+ font-weight: bold;
+ cursor: pointer;
+ z-index: 1003; /* Ensure close button is on top */
+}
+.close:hover, .close:focus {
+ color: #bbb;
+ text-decoration: none;
+ cursor: pointer;
+}
+/* Previous and next buttons */
+.prev, .next {
+ cursor: pointer;
+ position: absolute;
+ top: 50%;
+ width: auto;
+ padding: 16px;
+ margin-top: -22px;
+ color: white;
+ font-weight: bold;
+ font-size: 30px;
+ transition: 0.6s ease;
+ border-radius: 0 3px 3px 0;
+ user-select: none;
+ z-index: 1003; /* Ensure it stays above the image */
+}
+/* Position the "next" button to the right */
+.next {
+ right: 0;
+ border-radius: 3px 0 0 3px;
+}
+/* Position the "prev" button to the left */
+.prev {
+ left: 0;
+ border-radius: 3px 0 0 3px;
+}
+/* On hover, add a slight dark background */
+.prev:hover, .next:hover {
+ background-color: rgba(0,0,0,0.8);
+}
+/* Skills Section */
+#skills {
+ max-width: 1000%;
+ margin: 20px;
+ padding: 50px;
+ background: linear-gradient(270deg, #ff6600, #ffcc00, #00ccff); /* Three-color gradient */
+ background-size: 600% 600%; /* Adjusted size for better visibility */
+ animation: gradientAnimation 15s ease infinite; /* Animation effect */
+ border-radius: 8px;
+ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+/* Gradient animation */
+@keyframes gradientAnimation {
+ 0% { background-position: 0% 50%; } 
+ 50% { background-position: 100% 50%; }
+ 100% { background-position: 0% 50%; }
+}
+.tab {
+ overflow: hidden;
+}
+.tab button {
+ background-color: #ff6600;
+ border: none;
+ cursor: pointer;
+ padding: 10px 20px;
+ transition: 0.3s;
+ font-size: 17px;
+}
+.tab button:hover {
+ background-color: #282c34;
+ color: #ffffff;
+}
+.tab button.active {
+ background-color: #282c34;
+ color: white;
+}
+.tabcontent {
+ display: none;
+ padding: 20px;
+ border: 1px solid #ddd;
+ border-radius: 4px;
+ background: white;
+}
+.goal-grid {
+ display: grid;
+ grid-template-columns: repeat(2, 1fr); /* Two cards per row */
+ gap: 20px;
+ padding: 20px;
+}
+.goal-card {
+ background-color: #282c34;
+ border-radius: 12px;
+ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+ transition: transform 0.3s, box-shadow 0.3s;
+ padding: 20px;
+ position: relative;
+ overflow: hidden;
+ cursor: pointer;
+ color: #ffffff;
+}
+.goal-card:hover {
+ transform: translateY(-5px);
+ box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+.goal-header {
+ color: white;
+ padding: 15px;
+ border-radius: 8px 8px 0 0;
+ font-size: 1.8em;
+ text-align: center;
+}
+.goal-details {
+ display: none; /* Hidden by default */
+ margin-top: 10px;
+ color: #ffffff;
+ font-size: 1em;
+ line-height: 1.5;
+} 
+.goal-details.active {
+ display: block; /* Show when active */
+ animation: fadeIn 0.3s ease-in;
+}
+@keyframes fadeIn {
+ from {
+ opacity: 0;
+ }
+ to {
+ opacity: 1;
+ }
+}
+/* Container for all funfact cards */
+.funfacts-section{
+ padding: 30px;
+ margin: 100px 20px; /* Add top margin to prevent content being hidden behind the fixed header 
+and nav */
+ background-color: white;
+ border-radius: 8px;
+ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.funfact-container {
+ display: flex;
+ gap: 20px; /* Space between each card */
+ justify-content: center; /* Centers cards horizontally */
+ align-items: center; /* Aligns cards vertically */
+ padding: 20px;
+ margin-top: 0px;
+}
+.funfact-card {
+ width: 300px;
+ height: 200px;
+ perspective: 1000px; /* Enables the 3D effect */
+ position: relative;
+}
+.funfact-inner {
+ width: 100%;
+ height: 100%;
+ position: relative;
+ transition: transform 0.8s ease-in-out; /* Smooth flip transition */
+ transform-style: preserve-3d; /* Ensures child elements are in 3D space */
+}
+.funfact-card:hover .funfact-inner {
+ transform: rotateY(180deg); /* Flips the card when hovered */
+}
+.funfact-front, .funfact-back {
+ position: absolute;
+ width: 100%;
+ height: 100%;
+ backface-visibility: hidden; /* Ensures the back is hidden when not flipped */
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-size:25px;
+ color: #fff;
+ border-radius: 10px;
+ text-align: center;
+ margin-bottom: 20px;
+}
+/* Front of the card */
+.funfact-front {
+ background-color: #282c34;
+}
+/* Back of the card */
+.funfact-back {
+ background-color: #ff6600;
+ transform: rotateY(180deg); /* Initially hidden by rotating it */ 
+}
+.container {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ gap: 40px; /* Space between image and quote */
+ max-width: 100%;
+ margin: 20px 100px;
+ padding: 20px;
+ border-radius: 8px;
+ background: linear-gradient(270deg, #ff6600, #ffcc00, #00ccff); /* Three-color gradient */
+ background-size: 600% 600%; /* Adjusted size for better visibility */
+ animation: gradientAnimation 15s ease infinite; /* Animation effect */
+}
+.image-section img {
+ max-width: 100%;
+ height: auto;
+ border-radius: 8px;
+ width: 500px; /* Adjust image size as needed */
+}
+.quote-section {
+ max-width: 50%; /* Adjust as needed */
+ text-align: left;
+}
+.quote-section h1 {
+ font-size: 36px;
+ font-weight: bold;
+ color: #000000;
+ margin-bottom: 20px;
+}
+.quote-section p {
+ font-size: 18px;
+ color: #000000;
+ line-height: 1.6;
+ margin-bottom: 20px;
+}
+.quote-section blockquote {
+ font-style: italic;
+ margin: 0;
+ padding: 20px 50px;
+ background-color: transparent; /* Background color for the quote */
+ border-bottom: 5px solid #282c34;
+ border-top: 5px solid #282c34;
+ border-radius: 8px;
+ text-align: center;
+ color: #ffffff;
+ font-size: 20px;
+ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for effect */
+}
+/* Logout button styling */
+.logout-button {
+ background-color: #ff6600;
+ color: rgb(0, 0, 0);
+ padding: 15px 10px;
+ text-decoration: none;
+ font-weight: bold;
+ font-size: 20px;
+ position: absolute;
+ right: 15px; /* Aligns to the right-most part of the nav bar */
+}
+.logout-button:hover {
+ background-color: #ffffff;
+ color: #ff6600;
+} 
+/* =========================================
+   MOBILE RESPONSIVE DESIGN
+   ========================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+
+/* =========================
+   TABLET
+   ========================= */
+
+@media (max-width: 900px) {
+
+    header h1 {
+        font-size: 28px;
+    }
+
+    nav ul li {
+        margin: 0 5px;
+    }
+
+    nav ul li a {
+        font-size: 16px;
+        padding: 12px 8px;
+    }
+
+    .logout-button {
+        position: static;
+        font-size: 16px;
+        padding: 12px 8px;
+    }
+
+    section {
+        margin-left: 20px;
+        margin-right: 20px;
+        padding: 30px;
+    }
+
+    .container {
+        margin: 20px;
+        gap: 20px;
+    }
+
+    .image-section img {
+        width: 400px;
+    }
+
+    .quote-section {
+        max-width: 50%;
+    }
+
+    #contact {
+        width: 90%;
+    }
+}
+
+
+/* =========================
+   MOBILE PHONE
+   ========================= */
+
+@media (max-width: 600px) {
+
+    /* ---------- BODY ---------- */
+
+    body {
+        font-size: 15px;
+    }
+
+
+    /* ---------- HEADER ---------- */
+
+    header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 12px 8px;
+    }
+
+    header h1 {
+        font-size: 21px;
+        margin: 0;
+        line-height: 1.3;
+    }
+
+
+    /* ---------- NAVIGATION ---------- */
+
+    nav {
+        position: fixed;
+        top: 65px;
+        left: 0;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    nav ul {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: max-content;
+        min-width: 100%;
+        padding: 0;
+    }
+
+    nav ul li {
+        margin: 0;
+        flex-shrink: 0;
+    }
+
+    nav ul li a {
+        font-size: 13px;
+        padding: 12px 10px;
+        white-space: nowrap;
+    }
+
+    nav ul li a:hover {
+        font-size: 13px;
+    }
+
+    .logout-button {
+        position: static;
+        display: block;
+        font-size: 13px;
+        padding: 12px 10px;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+
+    /* ---------- DROPDOWN ---------- */
+
+    .dropdown-content {
+        position: fixed;
+        top: 110px;
+        left: 5px;
+        min-width: 180px;
+        max-width: 90vw;
+    }
+
+    .dropdown-content a {
+        font-size: 14px;
+        padding: 12px;
+        white-space: normal;
+    }
+
+
+    /* ---------- SPACE BELOW NAV ---------- */
+
+    #section2 {
+        height: 110px;
+        margin: 0;
+        padding: 0;
+        background: transparent;
+    }
+
+
+    /* ---------- GENERAL SECTIONS ---------- */
+
+    section {
+        width: calc(100% - 20px);
+        margin: 10px auto;
+        padding: 20px 15px;
+        border-radius: 10px;
+    }
+
+    #drop {
+        padding: 20px 15px;
+    }
+
+    #drop h2 {
+        font-size: 30px;
+        line-height: 1.2;
+    }
+
+    #drop p {
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+
+    /* ---------- SLIDER ---------- */
+
+    .slider {
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+    }
+
+    .slides img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+    }
+
+    .text-overlay {
+        width: 90%;
+        padding: 10px;
+        font-size: 18px;
+    }
+
+    .text-overlay h1 {
+        font-size: 22px;
+        margin: 0;
+    }
+
+
+    /* ---------- FUN FACTS ---------- */
+
+    .funfact-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 10px 0;
+    }
+
+    .funfact-card {
+        width: 100%;
+        max-width: 320px;
+        height: 180px;
+    }
+
+    .funfact-front,
+    .funfact-back {
+        font-size: 19px;
+        padding: 15px;
+    }
+
+    .see-more-button {
+        font-size: 16px;
+        padding: 10px 18px;
+    }
+
+
+    /* ---------- PROFILE / QUOTE ---------- */
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        width: calc(100% - 20px);
+        margin: 15px auto;
+        padding: 15px;
+        gap: 20px;
+    }
+
+    .image-section {
+        width: 100%;
+        text-align: center;
+    }
+
+    .image-section img {
+        width: 100%;
+        max-width: 320px;
+        height: auto;
+    }
+
+    .quote-section {
+        width: 100%;
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .quote-section h1 {
+        font-size: 28px;
+    }
+
+    .quote-section p {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    .quote-section blockquote {
+        font-size: 16px;
+        padding: 15px;
+    }
+
+
+    /* ---------- SKILLS ---------- */
+
+    #skills {
+        width: 100%;
+        margin: 10px 0;
+        padding: 15px;
+    }
+
+    .tab {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .tab button {
+        width: 100%;
+        font-size: 15px;
+        padding: 12px;
+        border-radius: 5px;
+    }
+
+    .tabcontent {
+        padding: 15px;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .tabcontent h3 {
+        font-size: 20px;
+    }
+
+
+    /* ---------- GOALS ---------- */
+
+    .goal-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 10px 0;
+    }
+
+    .goal-card {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .goal-header {
+        font-size: 1.3em;
+        padding: 12px;
+    }
+
+    .goal-card p {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+
+    /* ---------- GALLERY ---------- */
+
+    .gallery {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 5px;
+    }
+
+    .gallery-item {
+        width: 100%;
+    }
+
+    .gallery img {
+        width: 100%;
+        height: 220px;
+        margin: 0;
+        object-fit: cover;
+    }
+
+    .image-description {
+        font-size: 14px;
+    }
+
+
+    /* ---------- LIGHTBOX ---------- */
+
+    .lightbox-content {
+        max-width: 92%;
+        max-height: 75%;
+        margin-top: 20%;
+    }
+
+    .close {
+        top: 10px;
+        right: 15px;
+        font-size: 35px;
+    }
+
+    .prev,
+    .next {
+        padding: 10px;
+        font-size: 24px;
+    }
+
+
+    /* ---------- CONTACT ---------- */
+
+    #contact {
+        display: block;
+        width: calc(100% - 20px);
+        margin: 15px auto;
+        padding: 20px 15px;
+    }
+
+    .contact-content {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .contact-form {
+        width: 100%;
+    }
+
+    .contact-form label {
+        font-size: 16px;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+        width: 100%;
+        font-size: 16px;
+        padding: 12px;
+    }
+
+    .contact-form textarea {
+        min-height: 120px;
+    }
+
+    .contact-form button {
+        width: 100%;
+        font-size: 15px;
+    }
+
+    #contact h2 {
+        font-size: 27px;
+    }
+
+    .contact-details {
+        width: 100%;
+        padding: 18px;
+        font-size: 15px;
+    }
+
+    .contact-details h3 {
+        font-size: 25px;
+    }
+
+
+    /* ---------- FOOTER ---------- */
+
+    footer {
+        width: 100%;
+        padding: 15px 10px;
+        font-size: 13px;
+    }
+
+    .footer-divider {
+        height: 4px;
+    }
+}
+
+
+/* =========================
+   VERY SMALL PHONES
+   ========================= */
+
+@media (max-width: 380px) {
+
+    header h1 {
+        font-size: 18px;
+    }
+
+    nav ul li a,
+    .logout-button {
+        font-size: 11px;
+        padding: 10px 7px;
+    }
+
+    .slides img {
+        height: 210px;
+    }
+
+    .text-overlay h1 {
+        font-size: 18px;
+    }
+
+    #drop h2 {
+        font-size: 26px;
+    }
+
+    .funfact-card {
+        height: 160px;
+    }
+
+    .funfact-front,
+    .funfact-back {
+        font-size: 16px;
+    }
+
+    .quote-section h1 {
+        font-size: 24px;
+    }
+}
+/* ==============================
+   3D ROTATING GALLERY
+   ============================== */
+
+.gallery-3d {
+    width: 100%;
+    height: 520px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    perspective: 1200px;
+
+    overflow: hidden;
+}
+
+.gallery-3d-container {
+    width: 220px;
+    height: 320px;
+
+    position: relative;
+
+    transform-style: preserve-3d;
+
+    animation: rotateGallery 18s linear infinite;
+}
+
+.gallery-card {
+    position: absolute;
+
+    width: 220px;
+    height: 320px;
+
+    overflow: hidden;
+
+    border-radius: 8px;
+
+    background: #111;
+
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.6);
+
+    backface-visibility: visible;
+}
+
+.gallery-card img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+
+/* 3D image positions */
+
+.card1 {
+    transform: rotateY(0deg) translateZ(350px);
+}
+
+.card2 {
+    transform: rotateY(60deg) translateZ(350px);
+}
+
+.card3 {
+    transform: rotateY(120deg) translateZ(350px);
+}
+
+.card4 {
+    transform: rotateY(180deg) translateZ(350px);
+}
+
+.card5 {
+    transform: rotateY(240deg) translateZ(350px);
+}
+
+.card6 {
+    transform: rotateY(300deg) translateZ(350px);
+}
+
+
+/* Automatic rotation */
+
+@keyframes rotateGallery {
+
+    from {
+        transform: rotateY(0deg);
+    }
+
+    to {
+        transform: rotateY(360deg);
+    }
+
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .gallery-3d {
+        height: 430px;
+        perspective: 900px;
+    }
+
+    .gallery-3d-container {
+        width: 160px;
+        height: 240px;
+    }
+
+    .gallery-card {
+        width: 160px;
+        height: 240px;
+    }
+
+    .card1 {
+        transform: rotateY(0deg) translateZ(240px);
+    }
+
+    .card2 {
+        transform: rotateY(60deg) translateZ(240px);
+    }
+
+    .card3 {
+        transform: rotateY(120deg) translateZ(240px);
+    }
+
+    .card4 {
+        transform: rotateY(180deg) translateZ(240px);
+    }
+
+    .card5 {
+        transform: rotateY(240deg) translateZ(240px);
+    }
+
+    .card6 {
+        transform: rotateY(300deg) translateZ(240px);
+    }
+
+}
+.gallery-3d-container.paused {
+    animation-play-state: paused;
+}
+/* ================================
+   GALLERY SPACE BACKGROUND
+================================ */
+
+#gallery {
+
+    min-height: 100vh;
+
+    padding-top: 170px;
+    padding-bottom: 100px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            rgba(2, 10, 35, 0.25),
+            rgba(2, 10, 35, 0.55)
+        ),
+        url("Images/gallery-bg.jpg");
+
+    background-size: cover;
+
+    background-position: center;
+
+    background-attachment: fixed;
+
+}
+
+
+/* DARK SPACE OVERLAY */
+
+#gallery::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at center,
+            transparent 10%,
+            rgba(0, 0, 20, 0.35) 70%,
+            rgba(0, 0, 0, 0.75)
+        );
+
+    pointer-events: none;
+
+}
+
+
+/* ================================
+   GALLERY TITLE
+================================ */
+
+.gallery-title {
+
+    position: relative;
+
+    z-index: 2;
+
+    text-align: center;
+
+    margin-bottom: 50px;
+
+}
+
+
+.gallery-title h2 {
+
+    font-family: Georgia, serif;
+
+    font-size: 60px;
+
+    letter-spacing: 8px;
+
+    color: white;
+
+    margin: 0;
+
+    text-shadow:
+        0 0 10px #ffffff,
+        0 0 25px #4da6ff,
+        0 0 45px #0066ff;
+
+}
+
+
+.gallery-title p {
+
+    color: #dbeaff;
+
+    font-size: 18px;
+
+    letter-spacing: 3px;
+
+    margin-top: 15px;
+
+}
+
+
+/* ================================
+   3D GALLERY
+================================ */
+
+.gallery-3d {
+
+    position: relative;
+
+    z-index: 2;
+
+    width: 100%;
+
+    height: 550px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    perspective: 1400px;
+
+}
+
+
+/* GLOWING FLOOR / ORBIT */
+
+.gallery-3d::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 700px;
+
+    height: 120px;
+
+    border: 2px solid rgba(80, 160, 255, 0.8);
+
+    border-radius: 50%;
+
+    bottom: 20px;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    box-shadow:
+        0 0 15px #338cff,
+        0 0 40px #0066ff;
+
+}
+
+
+/* ================================
+   CONTAINER
+================================ */
+
+.gallery-3d-container {
+
+    position: relative;
+
+    width: 250px;
+
+    height: 360px;
+
+    transform-style: preserve-3d;
+
+    animation: rotateGallery 18s linear infinite;
+
+}
+
+
+/* PAUSE WHEN CLICKED */
+
+.gallery-3d-container.paused {
+
+    animation-play-state: paused;
+
+}
+
+
+/* ================================
+   GALLERY CARDS
+================================ */
+
+.gallery-card {
+
+    position: absolute;
+
+    width: 250px;
+
+    height: 360px;
+
+    left: 0;
+
+    top: 0;
+
+    border-radius: 15px;
+
+    overflow: hidden;
+
+    border: 2px solid rgba(80, 170, 255, 0.9);
+
+    background: #02091c;
+
+    box-shadow:
+        0 0 15px rgba(40, 140, 255, 0.8),
+        0 0 35px rgba(0, 80, 255, 0.5);
+
+    backface-visibility: hidden;
+
+}
+
+
+.gallery-card img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+}
+
+
+/* ================================
+   3D POSITIONS
+================================ */
+
+.card1 {
+
+    transform:
+        rotateY(0deg)
+        translateZ(430px);
+
+}
+
+
+.card2 {
+
+    transform:
+        rotateY(60deg)
+        translateZ(430px);
+
+}
+
+
+.card3 {
+
+    transform:
+        rotateY(120deg)
+        translateZ(430px);
+
+}
+
+
+.card4 {
+
+    transform:
+        rotateY(180deg)
+        translateZ(430px);
+
+}
+
+
+.card5 {
+
+    transform:
+        rotateY(240deg)
+        translateZ(430px);
+
+}
+
+
+.card6 {
+
+    transform:
+        rotateY(300deg)
+        translateZ(430px);
+
+}
+
+
+/* ================================
+   ROTATION
+================================ */
+
+@keyframes rotateGallery {
+
+    from {
+
+        transform: rotateY(0deg);
+
+    }
+
+    to {
+
+        transform: rotateY(360deg);
+
+    }
+
+}
+
+
+/* ================================
+   HOVER
+================================ */
+
+.gallery-card:hover {
+
+    box-shadow:
+        0 0 20px #66b5ff,
+        0 0 50px #0077ff;
+
+}
+
+
+/* ================================
+   MOBILE VERSION
+================================ */
+
+@media (max-width: 600px) {
+
+    #gallery {
+
+        padding-top: 150px;
+
+        min-height: 100vh;
+
+        background-attachment: scroll;
+
+    }
+
+
+    .gallery-title h2 {
+
+        font-size: 36px;
+
+        letter-spacing: 5px;
+
+    }
+
+
+    .gallery-title p {
+
+        font-size: 13px;
+
+        padding: 0 20px;
+
+        letter-spacing: 1px;
+
+    }
+
+
+    .gallery-3d {
+
+        height: 450px;
+
+    }
+
+
+    .gallery-3d-container {
+
+        width: 170px;
+
+        height: 250px;
+
+    }
+
+
+    .gallery-card {
+
+        width: 170px;
+
+        height: 250px;
+
+    }
+
+
+    .card1 {
+
+        transform:
+            rotateY(0deg)
+            translateZ(280px);
+
+    }
+
+
+    .card2 {
+
+        transform:
+            rotateY(60deg)
+            translateZ(280px);
+
+    }
+
+
+    .card3 {
+
+        transform:
+            rotateY(120deg)
+            translateZ(280px);
+
+    }
+
+
+    .card4 {
+
+        transform:
+            rotateY(180deg)
+            translateZ(280px);
+
+    }
+
+
+    .card5 {
+
+        transform:
+            rotateY(240deg)
+            translateZ(280px);
+
+    }
+
+
+    .card6 {
+
+        transform:
+            rotateY(300deg)
+            translateZ(280px);
+
+    }
+
+
+    .gallery-3d::after {
+
+        width: 300px;
+
+        height: 70px;
+
+    }
+
+}

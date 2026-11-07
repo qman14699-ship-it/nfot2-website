@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Kevin Bandong</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="site.css?v=5">
+    <link rel="stylesheet" href="nav.css?v=11">
+    <script src="nav.js?v=15" defer></script>
+
+    <link rel="stylesheet" href="home.css?v=1">
+    <link rel="stylesheet" href="now.css?v=3">
+    <link rel="stylesheet" href="coffee.css?v=6">
+    <link rel="stylesheet" href="code.css?v=6">
+</head>
+<body class="home-page dark">
+
+<div class="hero-bg">
+<main class="wrap">
+    <section class="hero">
+        <div class="hero-text">
+            <span class="chip">Information Systems Student</span>
+
+            <h1>Hi, I'm <span>Kevin</span></h1>
+            <p class="role"><span id="typed"></span><span class="cursor"></span></p>
+
+            <p class="desc">
+                I'm an Information Systems student who loves programming, exploring new technologies,
+                reading manhwa, listening to music, and enjoying a good cup of coffee. I'm constantly
+                learning and building the skills I need to create a better future.
+            </p>
+
+            <div class="btns">
+                <a href="skills.html" class="btn btn-accent">
+                    <svg class="ico" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    Explore My Journey
+                </a>
+                <a href="funfacts.html" class="btn btn-ghost">View About Me</a>
+            </div>
+        </div>
+
+        <div class="photo">
+            <!-- change the picture here -->
+            <img src="Images/9k.jpg" alt="Kevin Bandong" onerror="this.onerror=null;this.src='Images/falling.jpg';">
+        </div>
+    </section>
+
+    <div class="loves">
+        <button type="button" class="love love-code" id="codeBtn" aria-label="Open my code library">
+            <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            <span>Coding</span>
+        </button>
+        <button type="button" class="love love-manhwa" id="manhwaBtn" aria-label="Open my manhwa list">
+            <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            <span>Manhwa</span>
+        </button>
+        <button type="button" class="love love-music" id="musicBtn" aria-label="Open music player">
+            <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+            <span>Music</span>
+        </button>
+        <button type="button" class="love love-coffee" id="coffeeBtn" aria-label="Open my coffee menu">
+            <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+            <span>Coffee</span>
+        </button>
+    </div>
+</main>
+</div>
+
+<footer>
+    <p>&copy; 2026 Kevin Bandong. All rights reserved. &nbsp;<span class="tag">Better Code &middot; Brighter Future</span></p>
+</footer>
+
+<!-- MANHWA LIST -->
+<div class="mh" id="mh" role="dialog" aria-modal="true" aria-label="My manhwa">
+    <div class="mh-top">
+        <div>
+            <h2>Manhwa I Read</h2>
+            <small id="mhCount"></small>
+        </div>
+        <button type="button" class="mh-x" id="mhClose" aria-label="Close">&times;</button>
+    </div>
+    <div class="mh-grid" id="mhGrid"></div>
+</div>
+
+<!-- MANHWA DETAILS -->
+<div class="mhd" id="mhd" role="dialog" aria-modal="true" aria-labelledby="mhdTitle">
+    <div class="mhd-panel">
+        <div class="mhd-cover" id="mhdCover">
+            <button type="button" class="mhd-x" id="mhdClose" aria-label="Close details">&times;</button>
+        </div>
+        <div class="mhd-body">
+            <h3 class="mhd-title" id="mhdTitle"></h3>
+
+            <div class="mhd-row"><p class="k">Rating</p><p class="v" id="mhdRating"></p></div>
+            <div class="mhd-row"><p class="k">Main Character</p><p class="v" id="mhdMc"></p></div>
+            <div class="mhd-row"><p class="k">Art Style</p><p class="v" id="mhdArt"></p></div>
+            <div class="mhd-row"><p class="k">Story</p><p class="v" id="mhdStory"></p></div>
+            <div class="mhd-row"><p class="k">Overall Rating</p><p class="v" id="mhdOverall"></p></div>
+        </div>
+    </div>
+</div>
+
+<script src="home.js?v=1"></script>
+<script src="music-data.js?v=2"></script>
+<script src="manhwa-data.js?v=2"></script>
+<script src="manhwa.js?v=4"></script>
+<script src="coffee-data.js?v=3"></script>
+<script src="coffee.js?v=5"></script>
+<script src="code-data.js?v=5"></script>
+<script src="code-foryou.js?v=5"></script>
+<script src="code-loop.js?v=5"></script>
+<script src="code-webpage.js?v=5"></script>
+<script src="code-profile.js?v=5"></script>
+<script src="code.js?v=5"></script>
+<script src="photos.js?v=1"></script>
+<script src="now.js?v=4"></script>
+
+</body>
+</html>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="login_style.css">
+</head>
+<body>
+
+<!-- BACKGROUND: live na meteor (canvas) -->
+<div class="sky">
+    <canvas id="scene"></canvas>
+</div>
+
+<!-- LOGIN CARD -->
+<div class="form-container">
+
+    <h2 id="formTitle">Login</h2>
+
+    <form id="authForm" onsubmit="event.preventDefault(); handleSubmit();">
+
+        <div class="floating-input">
+            <input type="text" id="username" placeholder=" " autocomplete="username" required>
+            <label for="username">Username</label>
+        </div>
+
+        <div class="floating-input">
+            <input type="password" id="password" placeholder=" " autocomplete="current-password" required>
+            <label for="password">Password</label>
+        </div>
+
+        <div class="floating-input" id="confirmBox" style="display:none;">
+            <input type="password" id="confirmPassword" placeholder=" " autocomplete="new-password">
+            <label for="confirmPassword">Confirm Password</label>
+        </div>
+
+        <p id="passwordMatchMessage" style="display:none;"></p>
+
+        <div class="show-password">
+            <input type="checkbox" id="showPassword" onclick="togglePasswordVisibility()">
+            <label for="showPassword">Show Password</label>
+        </div>
+
+        <button type="submit" id="submitBtn">Login</button>
+
+        <p id="errorMessage"></p>
+
+        <p id="toggleText">
+            Don't have an account?
+            <a href="#" onclick="toggleForm(); return false;">Sign Up</a>
+        </p>
+
+    </form>
+</div>
+
+<script>
+/* =========================
+   METEOR SCENE (Your Name style)
+========================= */
+(function () {
+    const canvas = document.getElementById("scene");
+    const ctx = canvas.getContext("2d");
+    let W, H, stars = [], blades = [], clouds = [], last = 0;
+
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+    /* ---------- ULAP (malambot, makatotohanan, parang hamog) ---------- */
+    const TBL = new Float32Array(65536);
+    for (let i = 0; i < TBL.length; i++) TBL[i] = Math.random();
+
+    function makeCloud(w, h, bright, flat) {
+        const c = document.createElement("canvas");
+        c.width = w; c.height = h;
+        const x = c.getContext("2d");
+
+        const ox = Math.floor(Math.random() * 256), oy = Math.floor(Math.random() * 256);
+        const hash = (ix, iy) => TBL[((ix + ox) & 255) | (((iy + oy) & 255) << 8)];
+        const sm = t => t * t * (3 - 2 * t);
+        function noise(px, py) {
+            const ix = Math.floor(px), iy = Math.floor(py);
+            const fx = sm(px - ix), fy = sm(py - iy);
+            const a = hash(ix, iy), b = hash(ix + 1, iy), e = hash(ix, iy + 1), f = hash(ix + 1, iy + 1);
+            return a + (b - a) * fx + (e - a) * fy + (a - b - e + f) * fx * fy;
+        }
+        function fbm(px, py, oct) {
+            let v = 0, amp = 0.5, fr = 1;
+            for (let i = 0; i < oct; i++) { v += amp * noise(px * fr, py * fr); fr *= 2.03; amp *= 0.5; }
+            return v;
+        }
+
+        /* density field */
+        const fx = 5 / w, fy = (flat ? 12 : 5) / w;
+        const d = new Float32Array(w * h);
+        for (let yy = 0; yy < h; yy++) {
+            for (let xx = 0; xx < w; xx++) {
+                const u = xx / w, v = yy / h;
+                const warp = fbm(u * 3 + 11, v * 3 + 7, 2) * 1.8;
+                const n = fbm(xx * fx + warp, yy * fy + warp, 5);
+                const ex = (u - 0.5) / 0.5, ey = (v - (flat ? 0.5 : 0.55)) / (flat ? 0.5 : 0.45);
+                const env = flat ? 1 - (Math.pow(Math.abs(ex), 3) + ey * ey) : 1 - (ex * ex + ey * ey);
+                d[yy * w + xx] = clamp((n * 1.15 + clamp(env, 0, 1) * 0.9 - 0.8) * 2.4, 0, 1);
+            }
+        }
+
+        /* kulay: madilim na asul sa lilim, maputlang asul sa gilid na nakaharap sa liwanag */
+        const out = x.createImageData(w, h);
+        const Lo = Math.round(w * 0.02) + 2;
+        for (let yy = 0; yy < h; yy++) {
+            for (let xx = 0; xx < w; xx++) {
+                const i = yy * w + xx, v = d[i];
+                if (v < 0.004) continue;
+                const nb = d[Math.max(0, yy - Lo) * w + Math.min(w - 1, xx + Lo)];
+                const t = clamp(0.38 + (v - nb) * 1.8 + (1 - yy / h) * 0.25 + v * 0.15, 0, 1);
+                let r, g, b;
+                if (t < 0.5) { const k = t * 2; r = 22 + 58 * k; g = 40 + 80 * k; b = 100 + 95 * k; }
+                else { const k = (t - 0.5) * 2; r = 80 + 120 * k; g = 120 + 102 * k; b = 195 + 55 * k; }
+                const o = i * 4;
+                out.data[o] = clamp(r * bright, 0, 255);
+                out.data[o + 1] = clamp(g * bright, 0, 255);
+                out.data[o + 2] = clamp(b * bright, 0, 255);
+                out.data[o + 3] = Math.pow(v, 1.15) * 255;
+            }
+        }
+        x.putImageData(out, 0, 0);
+        return c;
+    }
+
+    /* x, y, lapad, taas/lapad, linaw, bilis, liwanag, patag(hamog) */
+    const CLOUD_SPECS = [
+        [-0.05, 0.03, 0.60, 0.45, 0.80, 3, 0.90, false],
+        [0.35,  0.06, 0.40, 0.40, 0.55, 4, 0.85, false],
+        [0.60,  0.12, 0.50, 0.55, 0.90, 3, 1.10, false],
+        [0.05,  0.30, 0.50, 0.40, 0.50, 4, 0.80, false],
+        [0.55,  0.40, 0.45, 0.45, 0.75, 5, 0.95, false],
+        [0.45,  0.62, 0.70, 0.35, 0.65, 4, 0.80, true],
+        [-0.10, 0.70, 1.20, 0.30, 0.85, 2, 0.75, true],
+        [0.25,  0.80, 1.00, 0.28, 0.70, 3, 0.65, true]
+    ];
+
+    /* ---------- RESIZE ---------- */
+    function resize() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = window.innerWidth;
+        H = window.innerHeight;
+        canvas.width = W * dpr;
+        canvas.height = H * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        const cols = ["#ffffff", "#ffffff", "#bcd8ff", "#7fb0ff", "#c59bff", "#6fe0ff"];
+        stars = Array.from({ length: Math.round(W * H / 4500) }, () => ({
+            x: Math.random() * W,
+            y: Math.random() * H * 0.88,
+            r: Math.random() < 0.08 ? 1.6 + Math.random() : Math.random() * 1.1 + 0.3,
+            c: cols[Math.floor(Math.random() * cols.length)],
+            s: Math.random() * 2 + 0.5,
+            o: Math.random() * 6
+        }));
+
+        /* damo: mas mataas at mas marami sa kanan */
+        blades = [];
+        for (let i = 0; i < W / 3; i++) {
+            const px = Math.random() * W;
+            const fx = px / W;
+            if (Math.random() > 0.25 + 0.75 * fx) continue;
+            blades.push({
+                x: px,
+                h: H * (0.025 + 0.14 * Math.pow(fx, 2.2) * Math.random() + 0.02 * Math.random()),
+                w: Math.random() * 2.5 + 1.5,
+                s: Math.random() * 2 + 1,
+                o: Math.random() * 6
+            });
+        }
+
+        clouds = CLOUD_SPECS.map((s, i) => {
+            const w = Math.max(W * s[2], 260);
+            const old = clouds[i];
+            const sw = 320, sh = Math.round(320 * s[3]);
+            return {
+                img: (old && old.img) || makeCloud(sw, sh, s[6], s[7]),
+                x: old ? old.x : W * s[0], y: H * s[1], w: w, h: w * s[3], a: s[4], v: s[5]
+            };
+        });
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    /* ---------- COMET (kurbadong landas) ---------- */
+    const MAIN = [[1.20, -0.15], [0.82, 0.06], [0.50, 0.28], [0.20, 0.75]];
+    const FRAG = [[0.74, 0.02], [0.64, 0.20], [0.57, 0.38], [0.545, 0.55]];
+
+    function pt(P, s) {
+        const u = 1 - s;
+        const a = u * u * u, b = 3 * u * u * s, c = 3 * u * s * s, d = s * s * s;
+        return {
+            x: (a * P[0][0] + b * P[1][0] + c * P[2][0] + d * P[3][0]) * W,
+            y: (a * P[0][1] + b * P[1][1] + c * P[2][1] + d * P[3][1]) * H
+        };
+    }
+
+    function ribbon(P, u, span, wMax, alpha, layers) {
+        const N = 50, pts = [];
+        for (let k = 0; k <= N; k++) {
+            const f = k / N, s = u - f * span;
+            if (s < 0) break;
+            const p = pt(P, s);
+            const q1 = pt(P, clamp(s + 0.005, 0, 1)), q0 = pt(P, clamp(s - 0.005, 0, 1));
+            const tx = q1.x - q0.x, ty = q1.y - q0.y, l = Math.hypot(tx, ty) || 1;
+            let nx = -ty / l, ny = tx / l;
+            if (nx < 0) { nx = -nx; ny = -ny; }       // ang liwanag ay lumalapad papunta sa ibabang-kanan
+            pts.push({ x: p.x, y: p.y, nx: nx, ny: ny, f: f });
+        }
+        ctx.lineCap = "butt";
+        layers.forEach(Ly => {
+            for (let k = 1; k < pts.length; k++) {
+                const a = pts[k - 1], b = pts[k];
+                const f = (a.f + b.f) / 2;
+                const grow = Math.pow(f, 0.7);
+                const off = Ly.o * wMax * grow;
+                ctx.strokeStyle = "rgba(" + Ly.c + "," + (alpha * Ly.a * Math.pow(1 - f, Ly.fall)).toFixed(3) + ")";
+                ctx.lineWidth = Ly.w * wMax * grow + Ly.min;
+                ctx.beginPath();
+                ctx.moveTo(a.x + a.nx * off, a.y + a.ny * off);
+                ctx.lineTo(b.x + b.nx * off, b.y + b.ny * off);
+                ctx.stroke();
+            }
+        });
+    }
+
+    function glow(x, y, r, stops, alpha) {
+        const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+        stops.forEach(s => g.addColorStop(s[0], s[1]));
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+    }
+
+    const MAIN_LAYERS = [
+        { c: "150,70,235",   w: 0.50, o: 0.85, min: 0,   a: 0.40, fall: 0.8 },
+        { c: "50,130,255",   w: 0.90, o: 0.45, min: 0,   a: 0.45, fall: 1.0 },
+        { c: "140,225,255",  w: 0.35, o: 0.20, min: 1,   a: 0.70, fall: 1.0 },
+        { c: "255,255,255",  w: 0.03, o: 0,    min: 1.6, a: 1.00, fall: 0.7 }
+    ];
+    const FRAG_LAYERS = [
+        { c: "90,160,255",   w: 0, o: 0, min: 5,   a: 0.25, fall: 1.0 },
+        { c: "170,215,255",  w: 0, o: 0, min: 1.6, a: 0.90, fall: 0.6 }
+    ];
+
+    const CYCLE = 14;    // segundo bawat ulit
+    const PASS = 0.78;   // bahagi ng cycle na dumadaan ang comet
+
+    /* ---------- FRAME ---------- */
+    function frame(ms) {
+        const t = ms / 1000;
+        const dt = Math.min(0.05, t - last);
+        last = t;
+        ctx.clearRect(0, 0, W, H);
+        ctx.globalCompositeOperation = "source-over";
+
+        /* bituin (may kulay) */
+        stars.forEach(s => {
+            const tw = 0.35 + 0.65 * Math.abs(Math.sin(t * s.s + s.o));
+            ctx.fillStyle = s.c;
+            ctx.globalAlpha = tw;
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+            ctx.fill();
+            if (s.r > 1.5) {
+                ctx.globalAlpha = tw * 0.22;
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.r * 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        });
+        ctx.globalAlpha = 1;
+
+        /* ulap */
+        clouds.forEach(c => {
+            c.x += c.v * dt;
+            if (c.x > W) c.x = -c.w;
+            ctx.globalAlpha = c.a;
+            ctx.drawImage(c.img, c.x, c.y, c.w, c.h);
+        });
+        ctx.globalAlpha = 1;
+
+        /* comet: dumadaan lang */
+        const phase = (t % CYCLE) / CYCLE;
+        if (phase < PASS) {
+            const p = phase / PASS;
+            const fade = clamp(Math.min(p / 0.08, (1 - p) / 0.22), 0, 1);
+            ctx.globalCompositeOperation = "lighter";
+
+            /* manipis na piraso na may pulang kislap */
+            const u2 = clamp(p * 1.15 - 0.1, 0, 1);
+            if (u2 > 0) {
+                ribbon(FRAG, u2, 0.55, 0, fade, FRAG_LAYERS);
+                const q = pt(FRAG, u2);
+                const sp = clamp((u2 - 0.75) / 0.15, 0, 1) * fade;
+                if (sp > 0) {
+                    glow(q.x, q.y, 20, [[0, "rgba(255,210,170,1)"], [0.4, "rgba(255,90,40,.55)"], [1, "rgba(255,60,20,0)"]], sp);
+                    ctx.strokeStyle = "rgba(255,110,60," + (0.9 * sp) + ")";
+                    ctx.lineWidth = 2;
+                    for (let k = -2; k <= 2; k++) {
+                        const ang = -Math.PI / 2 + k * 0.38;
+                        const len = 12 + (2 - Math.abs(k)) * 3;
+                        ctx.beginPath();
+                        ctx.moveTo(q.x, q.y);
+                        ctx.lineTo(q.x + Math.cos(ang) * len, q.y + Math.sin(ang) * len);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            /* pangunahing comet */
+            const wMax = Math.min(W, H) * 0.20;
+            ribbon(MAIN, p, 0.78, wMax, fade, MAIN_LAYERS);
+            const h = pt(MAIN, p);
+            const ng = ctx.createLinearGradient(h.x, h.y, h.x, h.y - H * 0.22);
+            ng.addColorStop(0, "rgba(160,210,255," + (0.9 * fade) + ")");
+            ng.addColorStop(1, "rgba(80,140,255,0)");
+            ctx.strokeStyle = ng;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(h.x, h.y);
+            ctx.lineTo(h.x, h.y - H * 0.22);
+            ctx.stroke();
+            glow(h.x, h.y, 42, [[0, "rgba(255,255,255,1)"], [0.2, "rgba(190,225,255,.85)"], [0.5, "rgba(70,130,255,.35)"], [1, "rgba(40,90,255,0)"]], fade);
+        }
+
+        /* damo (silhouette) */
+        ctx.globalCompositeOperation = "source-over";
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = "#01030a";
+        blades.forEach(b => {
+            const sway = Math.sin(t * b.s + b.o) * 4;
+            ctx.beginPath();
+            ctx.moveTo(b.x - b.w, H);
+            ctx.lineTo(b.x + sway - 2, H - b.h);
+            ctx.lineTo(b.x + b.w, H);
+            ctx.closePath();
+            ctx.fill();
+        });
+        ctx.fillRect(0, H - 8, W, 8);
+
+        requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+})();
+</script>
+
+<script>
+let isLogin = true;
+
+/* ===== TOGGLE LOGIN / SIGN UP ===== */
+function toggleForm() {
+    const form = document.getElementById("authForm");
+    form.reset();
+    document.getElementById("errorMessage").textContent = "";
+    document.getElementById("passwordMatchMessage").style.display = "none";
+
+    // ibalik sa hidden ang password kapag nag-switch
+    document.getElementById("password").type = "password";
+    document.getElementById("confirmPassword").type = "password";
+
+    isLogin = !isLogin;
+
+    document.getElementById("formTitle").textContent = isLogin ? "Login" : "Sign Up";
+    document.getElementById("submitBtn").textContent = isLogin ? "Login" : "Sign Up";
+    document.getElementById("confirmBox").style.display = isLogin ? "none" : "block";
+    document.getElementById("confirmPassword").required = !isLogin;
+
+    document.getElementById("toggleText").innerHTML = isLogin
+        ? 'Don\'t have an account? <a href="#" onclick="toggleForm(); return false;">Sign Up</a>'
+        : 'Already have an account? <a href="#" onclick="toggleForm(); return false;">Login</a>';
+}
+
+/* ===== SUBMIT ===== */
+function handleSubmit() {
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
+    const error = document.getElementById("errorMessage");
+
+    if (isLogin) {
+        if (username === localStorage.getItem("username") &&
+            password === localStorage.getItem("password")) {
+            alert("Welcome! Successfully logged in.");
+            window.location.href = "index.html";
+        } else {
+            error.textContent = "Invalid username or password";
+        }
+        return;
+    }
+
+    const confirmPassword = document.getElementById("confirmPassword").value;
+
+    if (!username || !password) {
+        error.textContent = "Please fill out all fields";
+    } else if (password !== confirmPassword) {
+        error.textContent = "Passwords do not match";
+    } else {
+        localStorage.setItem("username", username);
+        localStorage.setItem("password", password);
+        alert("Account created successfully! You can now log in.");
+        toggleForm();
+    }
+}
+
+/* ===== SHOW PASSWORD ===== */
+function togglePasswordVisibility() {
+    const type = document.getElementById("showPassword").checked ? "text" : "password";
+    document.getElementById("password").type = type;
+    document.getElementById("confirmPassword").type = type;
+}
+
+/* ===== PASSWORD MATCH ===== */
+function checkPasswordMatch() {
+    const password = document.getElementById("password").value;
+    const confirm = document.getElementById("confirmPassword").value;
+    const message = document.getElementById("passwordMatchMessage");
+
+    if (isLogin || confirm === "") {
+        message.style.display = "none";
+        return;
+    }
+
+    const match = password === confirm;
+    message.textContent = match ? "Passwords match" : "Passwords do not match";
+    message.style.color = match ? "#5cff9d" : "#ff6688";
+    message.style.display = "block";
+}
+
+document.getElementById("confirmPassword").addEventListener("input", checkPasswordMatch);
+document.getElementById("password").addEventListener("input", checkPasswordMatch);
+</script>
+
+</body>
+</html>

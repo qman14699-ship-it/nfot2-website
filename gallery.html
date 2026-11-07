@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - Kevin Bandong</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="site.css?v=5">
+    <link rel="stylesheet" href="nav.css?v=11">
+    <link rel="stylesheet" href="gallery-pro.css?v=5">
+    <script src="nav.js?v=15" defer></script>
+</head>
+<body class="dark">
+
+<section class="page">
+    <div class="wrap">
+        <p class="eyebrow-l">Gallery</p>
+        <h1 class="title">Moments &amp; Memories</h1>
+        <p class="lead">Moments, memories, and things I love.</p>
+        <span class="g-count" id="gCount"></span>
+    </div>
+
+    <!-- two rows of photos sliding in opposite directions (you can also swipe them) -->
+    <div class="g-wall" id="gWall"></div>
+
+    <div class="wrap">
+        <h2 class="g-sub" id="gSub">Album</h2>
+        <p class="tap-hint">Tap an album or photo to view it bigger.</p>
+        <div class="g-grid" id="gGrid"></div>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2026 Kevin Bandong. All rights reserved. &nbsp;<span class="tag">Better Code &middot; Brighter Future</span></p>
+</footer>
+
+<!-- photo viewer -->
+<div class="lbx" id="lbx" role="dialog" aria-modal="true" aria-label="Photo viewer">
+    <span class="lbx-no" id="lbxNo"></span>
+    <button type="button" class="lbx-close" id="lbxClose" aria-label="Close">&times;</button>
+
+    <div class="lbx-stage" id="lbxStage">
+        <img class="lbx-img" id="lbxImg" alt="">
+    </div>
+
+    <button type="button" class="lbx-nav prev" id="lbxPrev" aria-label="Previous photo">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button type="button" class="lbx-nav next" id="lbxNext" aria-label="Next photo">
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+
+    <div class="lbx-cap" id="lbxCap">
+        <h3 id="lbxTitle"></h3>
+        <p id="lbxText"></p>
+    </div>
+</div>
+
+<script src="photos.js?v=1"></script>
+<script src="gallery.js?v=8"></script>
+
+</body>
+</html>

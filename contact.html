@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Kevin Bandong</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="site.css?v=5">
+    <link rel="stylesheet" href="nav.css?v=11">
+    <script src="nav.js?v=15" defer></script>
+
+    <style>
+        /* ---------- sunset box only as tall as the content (same as Home) ---------- */
+        body.dark > .page { flex: 0 0 auto; padding-bottom: 36px; }
+        body.dark > footer { margin-top: 0 !important; }
+
+        /* ---------- two columns: info on the left, form card on the right ---------- */
+        #contact .wrap { max-width: 1060px; padding-top: 10px; }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 28px;
+            align-items: start;
+        }
+        @media (min-width: 820px) {
+            .contact-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: center; min-height: 360px; }
+        }
+
+        .c-left .lead { max-width: 420px; }
+
+        /* ---------- info list (address / phone / email) ---------- */
+        .find { margin: 0; padding: 0; max-width: 460px; }
+
+        .c-info { display: grid; gap: 6px; margin: 4px 0 0; }
+        .ci-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 10px 10px 10px 4px;
+            border-radius: 12px;
+            color: var(--white);
+            text-decoration: none;
+            transition: background .2s ease, transform .2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .ci-row:hover, .ci-row:focus-visible { background: rgba(255, 255, 255, .06); transform: translateX(3px); outline: none; }
+        .ci-row .ri {
+            flex: 0 0 auto;
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            fill: none;
+            stroke: var(--white);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .ci-row b { display: block; color: var(--white); font: 700 .8rem 'Montserrat', system-ui, sans-serif; }
+        .ci-row span { display: block; margin-top: 1px; color: #CBD5E1; font: 400 .78rem/1.5 'Montserrat', system-ui, sans-serif; word-break: break-word; }
+
+        /* ---------- form card ---------- */
+        .c-card {
+            box-sizing: border-box;
+            padding: 26px 22px 24px;
+            background: linear-gradient(160deg, rgba(20, 28, 46, .82), rgba(12, 18, 32, .82));
+            border: 1px solid rgba(148, 163, 184, .16);
+            border-radius: 18px;
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 24px 50px -24px rgba(0, 0, 0, .9), inset 0 1px 0 rgba(255, 255, 255, .04);
+        }
+        .c-head {
+            margin: 0;
+            text-align: center;
+            color: #fff;
+            font: 800 1.45rem 'Montserrat', system-ui, sans-serif;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+        .c-head::after { content: ""; display: block; width: 26px; height: 3px; margin: 8px auto 0; border-radius: 3px; background: var(--accent); }
+        .c-sub { margin: 14px 0 18px; color: var(--white); font: 500 .76rem/1.6 'Montserrat', system-ui, sans-serif; }
+
+        .form { max-width: none; }
+
+        .field { position: relative; margin-bottom: 12px; }
+        .field .fi {
+            position: absolute;
+            left: 13px;
+            top: 14px;
+            width: 17px;
+            height: 17px;
+            fill: none;
+            stroke: var(--text);
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            pointer-events: none;
+        }
+        .field input, .field textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 13px 14px 13px 40px;
+            border: 1px solid rgba(148, 163, 184, .25);
+            border-radius: 10px;
+            background: rgba(15, 23, 42, .7);
+            color: var(--white);
+            font: 500 .9rem 'Montserrat', system-ui, sans-serif;
+            outline: none;
+            transition: border-color .2s ease, box-shadow .2s ease;
+        }
+        .field textarea { min-height: 110px; resize: vertical; }
+        .field input::placeholder, .field textarea::placeholder { color: #64748B; }
+        .field input:focus, .field textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, .18);
+        }
+        .error { display: block; min-height: 0; margin: 4px 2px 0; color: #FB7185; font-size: .75rem; }
+
+        .send { width: 100%; margin-top: 4px; }
+
+        /* ---------- social icon buttons ---------- */
+        .icon-row {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 10px;
+            padding-top: 40px;           /* room for the label bubble */
+        }
+        .ci {
+            --c: #94A3B8;
+            position: relative;
+            flex: 0 0 auto;
+            width: clamp(40px, 12vw, 48px);
+            aspect-ratio: 1;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: rgba(30, 41, 59, .85);
+            border: 1px solid rgba(148, 163, 184, .28);
+            color: var(--white);
+            text-decoration: none;
+            transition: transform .25s ease, background .25s ease, border-color .25s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .ci svg {
+            width: 44%;
+            height: 44%;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .ci::after {
+            content: attr(data-label);
+            position: absolute;
+            bottom: calc(100% + 12px);
+            left: 50%;
+            transform: translate(-50%, 6px);
+            padding: 5px 11px;
+            border-radius: 8px;
+            background: var(--c);
+            color: #fff;
+            font: 500 .74rem 'Montserrat', system-ui, sans-serif;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .25s ease, transform .25s ease;
+        }
+        .ci::before {
+            content: "";
+            position: absolute;
+            bottom: calc(100% + 6px);
+            left: 50%;
+            width: 9px;
+            height: 9px;
+            background: var(--c);
+            transform: translate(-50%, 6px) rotate(45deg);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .25s ease, transform .25s ease;
+        }
+        .ci:hover, .ci:focus-visible, .ci.on {
+            background: var(--c);
+            border-color: var(--c);
+            transform: translateY(-4px);
+            outline: none;
+            z-index: 5;
+        }
+        .ci:hover::after, .ci:focus-visible::after, .ci.on::after { opacity: 1; transform: translate(-50%, 0); }
+        .ci:hover::before, .ci:focus-visible::before, .ci.on::before { opacity: 1; transform: translate(-50%, 0) rotate(45deg); }
+
+        /* ---------- details pop-up (email / phone / location) ---------- */
+        .cmodal {
+            --c: #F97316;
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(5, 8, 20, .6);
+            -webkit-backdrop-filter: blur(4px);
+            backdrop-filter: blur(4px);
+        }
+        .cmodal[hidden] { display: none; }
+        .cm-card {
+            position: relative;
+            width: min(340px, 100%);
+            box-sizing: border-box;
+            padding: 26px 22px 22px;
+            background: #1E293B;
+            border: 1px solid rgba(148, 163, 184, .22);
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 30px 70px -20px rgba(0, 0, 0, .8);
+        }
+        .cm-ico { width: 60px; height: 60px; margin: 0 auto 12px; display: grid; place-items: center; border-radius: 50%; background: var(--c); color: #fff; }
+        .cm-ico svg { width: 44%; height: 44%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .cm-card h4 { margin: 0 0 6px; font-size: 1.05rem; color: var(--c); }
+        .cm-card p { margin: 0 0 18px; font-size: 1.05rem; font-weight: 600; color: var(--white); word-break: break-all; }
+        .cm-btns { display: flex; gap: 10px; }
+        .cm-btn {
+            flex: 1 1 0;
+            padding: 11px 14px;
+            border-radius: 999px;
+            border: 1.5px solid var(--c);
+            background: transparent;
+            color: var(--c);
+            font: 600 .9rem 'Montserrat', system-ui, sans-serif;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+        }
+        .cm-btn.primary { background: var(--c); color: #fff; }
+        .cm-x { position: absolute; top: 8px; right: 10px; width: 34px; height: 34px; border: 0; border-radius: 50%; background: transparent; color: var(--text); font-size: 1.5rem; line-height: 1; cursor: pointer; }
+    </style>
+</head>
+<body class="dark">
+
+<section class="page" id="contact">
+    <div class="wrap">
+        <div class="contact-grid">
+
+            <!-- LEFT: intro + contact info + social -->
+            <div class="c-left">
+                <p class="eyebrow-l">Get in Touch</p>
+                <h1 class="title">Let's Connect</h1>
+                <p class="lead">Have a question, collaboration, or just want to say hi? Feel free to reach out!</p>
+
+                <div class="find">
+                    <div class="c-info">
+                        <!-- Address -->
+                        <a class="ci-row" style="--c:#4285F4" data-label="Location"
+                           data-value="Importante, Tibiao, Antique"
+                           href="https://www.google.com/maps/search/?api=1&query=Importante,+Tibiao,+Antique"
+                           target="_blank" rel="noopener" aria-label="Location">
+                            <svg class="ri" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            <div><b>Address</b><span>Importante, Tibiao, Antique</span></div>
+                        </a>
+
+                        <!-- Phone -->
+                        <a class="ci-row" style="--c:#22A559" data-label="Phone"
+                           data-value="(+63) 963 893 2603"
+                           href="tel:+639638932603" aria-label="Phone">
+                            <svg class="ri" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            <div><b>Phone</b><span>(+63) 963 893 2603</span></div>
+                        </a>
+
+                        <!-- Email -->
+                        <a class="ci-row" style="--c:#EA4335" data-label="Email"
+                           data-value="kevinbandong08@gmail.com"
+                           href="mailto:kevinbandong08@gmail.com" aria-label="Email">
+                            <svg class="ri" viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                            <div><b>Email</b><span>kevinbandong08@gmail.com</span></div>
+                        </a>
+                    </div>
+
+                    <div class="icon-row">
+                        <!-- Facebook -->
+                        <a class="ci" style="--c:#1877F2" data-label="Facebook"
+                           href="https://www.facebook.com/ke.vin.943551" target="_blank" rel="noopener" aria-label="Facebook">
+                            <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                        </a>
+
+                        <!-- TikTok -->
+                        <a class="ci" style="--c:#FE2C55" data-label="TikTok"
+                           href="https://www.tiktok.com/@flasepost08" target="_blank" rel="noopener" aria-label="TikTok">
+                            <svg viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: form card -->
+            <div class="c-right">
+                <div class="c-card">
+                    <h2 class="c-head">Contact</h2>
+                    <p class="c-sub">Send me a message and I'll get back to you as soon as I can.</p>
+
+                    <form id="contactForm" class="form" novalidate>
+                        <div class="field">
+                            <svg class="fi" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            <input type="text" id="name" name="name" placeholder="Your Name" aria-label="Your Name">
+                            <span class="error" id="nameError"></span>
+                        </div>
+
+                        <div class="field">
+                            <svg class="fi" viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                            <input type="email" id="email" name="email" placeholder="Your Email" aria-label="Your Email">
+                            <span class="error" id="emailError"></span>
+                        </div>
+
+                        <div class="field">
+                            <svg class="fi" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                            <textarea id="message" name="message" placeholder="Your Message" aria-label="Your Message"></textarea>
+                            <span class="error" id="messageError"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-accent send">
+                            <svg class="ico" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2026 Kevin Bandong. All rights reserved. &nbsp;<span class="tag">Better Code &middot; Brighter Future</span></p>
+</footer>
+
+<!-- details pop-up -->
+<div class="cmodal" id="cmodal" hidden>
+    <div class="cm-card" role="dialog" aria-modal="true" aria-labelledby="cmTitle">
+        <button type="button" class="cm-x" id="cmClose" aria-label="Close">&times;</button>
+        <div class="cm-ico" id="cmIco"></div>
+        <h4 id="cmTitle"></h4>
+        <p id="cmValue"></p>
+        <div class="cm-btns">
+            <button type="button" class="cm-btn" id="cmCopy">Copy</button>
+            <a class="cm-btn primary" id="cmOpen" href="#">Open</a>
+        </div>
+    </div>
+</div>
+
+<script>
+/* ---------- form ---------- */
+(function () {
+    var form = document.getElementById('contactForm');
+    var nameInput = document.getElementById('name');
+    var emailInput = document.getElementById('email');
+    var messageInput = document.getElementById('message');
+
+    function validEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v).toLowerCase()); }
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var ok = true;
+        document.querySelectorAll('.error').forEach(function (el) { el.textContent = ''; });
+
+        if (!nameInput.value.trim()) { document.getElementById('nameError').textContent = 'Name is required'; ok = false; }
+
+        if (!emailInput.value.trim()) { document.getElementById('emailError').textContent = 'Email is required'; ok = false; }
+        else if (!validEmail(emailInput.value.trim())) { document.getElementById('emailError').textContent = 'Please enter a valid email'; ok = false; }
+
+        if (!messageInput.value.trim()) { document.getElementById('messageError').textContent = 'Message is required'; ok = false; }
+
+        if (!ok) return;
+
+        alert('Your message has been sent successfully!');
+        form.reset();
+    });
+})();
+</script>
+
+<script>
+/* ---------- icons ----------
+   Address / Phone / Email rows: tap -> details pop-up (Copy + Open).
+   Facebook / TikTok: on phones the first tap shows the label, the second tap opens it. */
+(function () {
+    var icons = document.querySelectorAll('.ci, .ci-row');
+    var touch = window.matchMedia('(hover: none)').matches;
+    var modal = document.getElementById('cmodal');
+    var copyBtn = document.getElementById('cmCopy');
+    var current = '';
+
+    function clearOn() { icons.forEach(function (i) { i.classList.remove('on'); }); }
+
+    function openModal(a) {
+        current = a.dataset.value;
+        modal.style.setProperty('--c', a.style.getPropertyValue('--c') || '#F97316');
+        document.getElementById('cmIco').innerHTML = a.querySelector('svg').outerHTML;
+        document.getElementById('cmTitle').textContent = a.dataset.label;
+        document.getElementById('cmValue').textContent = current;
+        var open = document.getElementById('cmOpen');
+        open.href = a.href;
+        open.target = a.target || '';
+        copyBtn.textContent = 'Copy';
+        modal.hidden = false;
+    }
+    function closeModal() { modal.hidden = true; }
+
+    icons.forEach(function (a) {
+        a.addEventListener('click', function (e) {
+            if (a.dataset.value) { e.preventDefault(); openModal(a); return; }
+            if (touch && !a.classList.contains('on')) { e.preventDefault(); clearOn(); a.classList.add('on'); }
+        });
+    });
+
+    copyBtn.addEventListener('click', function () {
+        function done() { copyBtn.textContent = 'Copied!'; }
+        function fallback() {
+            var t = document.createElement('textarea');
+            t.value = current;
+            document.body.appendChild(t);
+            t.select();
+            try { document.execCommand('copy'); done(); } catch (err) {}
+            t.remove();
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(current).then(done).catch(fallback);
+        } else { fallback(); }
+    });
+
+    document.getElementById('cmClose').addEventListener('click', closeModal);
+    modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
+    document.addEventListener('click', function (e) { if (!e.target.closest('.ci')) clearOn(); });
+})();
+</script>
+
+</body>
+</html>

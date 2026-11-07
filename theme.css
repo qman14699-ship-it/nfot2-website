@@ -1,0 +1,37 @@
+/* Same dark photo look as the Home page, for Skills / Goals / Fun Facts / Contact.
+   (nav.js loads this file automatically on those pages.) */
+
+:root { --bg: url('Images/home-bg.jpg'); }
+html { background: #0d1422; }
+
+body.themed {
+    background: none !important;
+    font-family: 'Montserrat', system-ui, sans-serif;
+}
+
+/* the photo behind the whole page, nav included */
+body.themed::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        linear-gradient(180deg, rgba(8, 12, 24, .6) 0%, rgba(8, 12, 24, .88) 100%),
+        var(--bg, none) center top / cover no-repeat;
+}
+
+/* softer, rounder boxes */
+body.themed section {
+    border-radius: 18px;
+}
+
+/* footer like the Home page */
+body.themed footer {
+    margin-top: 0;
+    background: rgba(10, 14, 26, .82) !important;
+    color: #cbd5e1 !important;
+    border-top: 1px solid rgba(255, 255, 255, .12);
+}
+body.themed footer p { color: #cbd5e1 !important; }
+body.themed .footer-divider { display: none !important; }
